@@ -31,6 +31,7 @@ public class Shooter : MonoBehaviour
 
         // And keep it updated as the mouse is kept down
         if (Input.GetMouseButton(0)) {
+            linerenderer.SetPosition(0, player.position);
             lineRenderer.SetPosition(1, Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
 
