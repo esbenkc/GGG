@@ -947,7 +947,7 @@ LineRenderer:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 0.12650603
+        value: 0.12047881
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -959,8 +959,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.14509805, g: 0.86666673, b: 0.45098042, a: 0.75686276}
-      key1: {r: 0.14159843, g: 0.8113208, b: 0.42337382, a: 0.61960787}
+      key0: {r: 0.14509805, g: 0.86666673, b: 0.45098042, a: 1}
+      key1: {r: 0.14159843, g: 0.8113208, b: 0.42337382, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -975,7 +975,7 @@ LineRenderer:
       ctime5: 0
       ctime6: 0
       ctime7: 0
-      atime0: 0
+      atime0: 193
       atime1: 65535
       atime2: 0
       atime3: 0
@@ -1006,9 +1006,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fc45ee7e6ce641a9b702b5387a3a825, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wireNodePrefab: {fileID: 0}
+  wireNodePrefab: {fileID: 89000909286299442, guid: 3cabdfdfbc3a743e08349e1be4d291cb, type: 3}
   player: {fileID: 81610010}
-  maxDistance: 0.5
+  maxDistance: 1
   lineRenderer: {fileID: 645422977}
 --- !u!4 &645422979
 Transform:

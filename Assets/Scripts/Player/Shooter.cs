@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
+    public bool movable = true;
+
     // Drag the player character to send it flying
     [SerializeField] private Transform player;
 
     // reference linerenderer
     [SerializeField] private LineRenderer lineRenderer;
 
-// Rigidbody2d
+    // Rigidbody2d
     private Rigidbody2D playerRigidbody;
 
     [SerializeField] private float power = 100;

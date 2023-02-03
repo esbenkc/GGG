@@ -36,7 +36,7 @@ public class Wire : MonoBehaviour
                 lineRenderer.enabled = true;
                 nodes.Add(Instantiate(wireNodePrefab, player.position, Quaternion.identity));
             } else {
-                if (Vector2.Distance(nodes[nodes.Count - 1].transform.position, transform.position) > maxDistance) {
+                if (Vector2.Distance(nodes[nodes.Count - 1].transform.position, player.position) > maxDistance) {
                     nodes.Add(Instantiate(wireNodePrefab, player.position, Quaternion.identity));
                     lineRenderer.positionCount = nodes.Count;
                     lineRenderer.SetPosition(nodes.Count - 1, nodes[nodes.Count - 1].transform.position);
