@@ -5,7 +5,12 @@ using UnityEngine;
 public class Shooter : MonoBehaviour
 {
     [SerializeField]
-    private bool movable = false;
+    private bool movable = true;
+
+    [SerializeField]
+    private float minSpeed = 0.01f, minDelay = 7.5f;
+
+    float delay = 0f;
 
     // Drag the player character to send it flying
     [SerializeField] private Transform player;
@@ -16,17 +21,18 @@ public class Shooter : MonoBehaviour
     // Rigidbody2d
     private Rigidbody2D playerRigidbody;
 
-    [SerializeField] private float power = 100;
+    [SerializeField] private float power = 100f;
+
+    // Make spanwPosition vector2
+    private Vector2 spawnPosition;
 
     private void Start() {
         // Disable the line renderer at the start
         lineRenderer.enabled = false;
         playerRigidbody = player.GetComponent<Rigidbody2D>();
         // Freeze the player character
-        if(movable == false)
-        {
-            playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-        }
+        playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        spawnPosition = player.position;
     }
 
     private void Update() {
@@ -45,23 +51,31 @@ public class Shooter : MonoBehaviour
 
         // When mouse is released send the player flying
         if (Input.GetMouseButtonUp(0) && movable) {
+            Debug.Log("Mouse released");
             lineRenderer.enabled = false;
-            SetMovable(false);
+            movable = false;
+            delay = 0f;
             playerRigidbody.constraints = RigidbodyConstraints2D.None;
             playerRigidbody.AddForce((player.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)) * power);
         }
-    }
 
-    public void SetMovable (bool movable)
-    {
-        this.movable = movable;
+        if(!movable) {
+            delay += Time.deltaTime;
+            if (delay > minDelay && playerRigidbody.velocity.magnitude < minSpeed) {
+                playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+                player.position = spawnPosition;
+                movable = true;
+            }
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
         // If the player hits the ground, unfreeze it
-        if (collision.gameObject.tag == "Earth") {
-            SetMovable(true);
+        // ONly when it hits "Earth", layer 6
+        if (collision.gameObject.layer ==  6) {
+            movable = true;
             playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            spawnPosition = player.position;
         }
     }
 }
