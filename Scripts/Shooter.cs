@@ -13,6 +13,8 @@ public class Shooter : MonoBehaviour
 // Rigidbody2d
     private Rigidbody2D playerRigidbody;
 
+    [SerializeField] private float power = 100;
+
     private void Start() {
         // Disable the line renderer at the start
         lineRenderer.enabled = false;
@@ -35,7 +37,7 @@ public class Shooter : MonoBehaviour
         // When mouse is released send the player flying
         if (Input.GetMouseButtonUp(0)) {
             lineRenderer.enabled = false;
-            playerRigidbody.AddForce((player.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)) * 1000);
+            playerRigidbody.AddForce((player.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)) * power);
         }
     }
 }
