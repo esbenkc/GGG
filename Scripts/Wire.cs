@@ -9,7 +9,7 @@ public class Wire : MonoBehaviour
     [SerializeField] private Transform player;
 
     // Maximum distance between nodes
-    [SerializeField] private float maxDistance = 0.5f;
+    [SerializeField] private float maxDistance = 0.5f, tension = 100f;
 
     // List of nodes
     private List<GameObject> nodes = new List<GameObject>();
@@ -35,13 +35,26 @@ public class Wire : MonoBehaviour
             if (nodes.Count == 0) {
                 lineRenderer.enabled = true;
                 nodes.Add(Instantiate(wireNodePrefab, player.position, Quaternion.identity));
+                lineRenderer.positionCount = nodes.Count;
+                lineRenderer.SetPosition(0, nodes[nodes.Count - 1].transform.position);
             } else {
-                if (Vector2.Distance(nodes[nodes.Count - 1].transform.position, transform.position) > maxDistance) {
+                if (Vector2.Distance(nodes[nodes.Count - 1].transform.position, player.position) > maxDistance) {
                     nodes.Add(Instantiate(wireNodePrefab, player.position, Quaternion.identity));
                     lineRenderer.positionCount = nodes.Count;
                     lineRenderer.SetPosition(nodes.Count - 1, nodes[nodes.Count - 1].transform.position);
+                    // Add a joint between the new node and the previous node
+                    WheelJoint2D joint = nodes[nodes.Count - 1].AddComponent<WheelJoint2D>();
+                    joint.connectedBody = nodes[nodes.Count - 2].GetComponent<Rigidbody2D>();
                 }
             }
+        }
+    }
+
+    void FixedUpdate()
+    {
+        for (int i = 0; i < nodes.Count; i++) {
+            // Update all the line renderer positions
+            lineRenderer.SetPosition(i, nodes[i].transform.position);
         }
     }
 }

@@ -906,7 +906,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1006,9 +1006,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fc45ee7e6ce641a9b702b5387a3a825, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wireNodePrefab: {fileID: 0}
+  wireNodePrefab: {fileID: 89000909286299442, guid: 3cabdfdfbc3a743e08349e1be4d291cb, type: 3}
   player: {fileID: 81610010}
-  maxDistance: 0.5
+  maxDistance: 2.5
+  tension: 100
   lineRenderer: {fileID: 645422977}
 --- !u!4 &645422979
 Transform:
