@@ -1,6 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class GameObjectEvent : UnityEvent<GameObject>
+{
+}
 
 public class Shooter : MonoBehaviour
 {
@@ -21,10 +27,13 @@ public class Shooter : MonoBehaviour
     // Rigidbody2d
     private Rigidbody2D playerRigidbody;
 
-    [SerializeField] private float power = 100f;
+    [SerializeField] private float power = 100f, torquePower = 20f;
 
     // Make spanwPosition vector2
     private Vector2 spawnPosition;
+
+    public UnityEvent onPlayerHitGoal, onPlayerHitGround;
+    public GameObjectEvent onPlayerHitKey;
 
     private void Start() {
         // Disable the line renderer at the start
@@ -57,6 +66,8 @@ public class Shooter : MonoBehaviour
             delay = 0f;
             playerRigidbody.constraints = RigidbodyConstraints2D.None;
             playerRigidbody.AddForce((player.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)) * power);
+            // Add randmo angular momentum
+            playerRigidbody.AddTorque(Random.Range(-torquePower, torquePower));
         }
 
         if(!movable) {
@@ -76,6 +87,16 @@ public class Shooter : MonoBehaviour
             movable = true;
             playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
             spawnPosition = player.position;
+            onPlayerHitGround.Invoke();
+        }
+
+        if (collision.gameObject.layer ==  7) {
+            playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            onPlayerHitGoal.Invoke();
+        }
+
+        if (collision.gameObject.layer ==  8) {
+            onPlayerHitKey.Invoke(collision.gameObject);
         }
     }
 }
