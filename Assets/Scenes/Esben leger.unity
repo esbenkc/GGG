@@ -356,7 +356,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 81610008}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: ad6e17b4466024be3b8351adf793e553, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -764,7 +764,7 @@ GameObject:
   - component: {fileID: 465778204}
   - component: {fileID: 465778203}
   - component: {fileID: 465778205}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hexagon Flat-Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -813,7 +813,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 2747690628134850419, guid: ff085ac9fd3734b31806e392db81df4b, type: 3}
-  m_Color: {r: 0.10588236, g: 0.058823533, b: 0.20784315, a: 1}
+  m_Color: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1461,7 +1461,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1388951836}
   - component: {fileID: 1388951837}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: "Fr\xF8"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
