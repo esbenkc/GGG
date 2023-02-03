@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
-    public bool movable = true;
+    [SerializeField]
+    private bool movable = true;
 
     // Drag the player character to send it flying
     [SerializeField] private Transform player;
