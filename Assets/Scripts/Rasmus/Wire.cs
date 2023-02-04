@@ -93,15 +93,18 @@ public class Wire : MonoBehaviour
     {
         nodes.Add(new Vector2(player.position.x, player.position.y));
     }
-
-    public void AddHitPoint()
+    void AddNode(Vector2 point)
     {
-        AddNode();
+        nodes.Add(point);
+    }
+    public void AddHitPoint(Collision2D coll)
+    {
+        AddNode(coll.contacts[0].point);
         if (currentLine != 0)
         {
             LineRenderer oldLine = lineRenderers[lineRenderers.Count - 1];
             oldLine.SetPosition(oldLine.positionCount - 1, player.position);
-            //oldLine.GetComponent<RootTrail>().StartAnimating();    
+            oldLine.GetComponent<RootTrail>().StartAnimating();
         }
         lineRenderers[currentLine].GetComponent<RootTrail>().StartAnimating();
         hitPoints.Add(nodes.Count - 1);
