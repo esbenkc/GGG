@@ -17,46 +17,52 @@ public class Wire : MonoBehaviour
     [SerializeField]
     private List<Vector2> nodes = new List<Vector2>();
     [SerializeField]
-    private List<LineRenderer> lineRenderers;
+    private List<LineRenderer> lineRenderers = new List<LineRenderer>();
     // Linerenderer
     [SerializeField]
     private LineRenderer lineRenderer;
 
     // update line renderer when moving
     private bool updating = false;
-    private int currentLine = 0;
+    private int currentLine = -1;
     public void RemoveRoot()
     {
         var line = lineRenderers[currentLine];
         lineRenderers.RemoveAt(currentLine--);
         Destroy(line.gameObject);
-        int end = nodes.Count - 1;
-        int beginning = hitPoints[hitPoints.Count - 2];
-        hitPoints.RemoveAt(hitPoints.Count - 1);
-        nodes.RemoveRange(beginning, end - beginning);
+        //int end = nodes.Count - 1;
+        //int beginning = hitPoints[hitPoints.Count - 1];
+        //hitPoints.RemoveAt(hitPoints.Count - 1);
+        //nodes.RemoveRange(beginning, end - beginning);
     }
 
-    IEnumerable DestroyLine(int lineIndex, float time)
+    
+
+    IEnumerator DestroyLine()
     {
         float startTime = Time.timeSinceLevelLoad;
-        
-        while (startTime + time < Time.timeSinceLevelLoad)
+        LineRenderer line = lineRenderers[currentLine];
+        while (startTime + 2 < Time.timeSinceLevelLoad)
         {
             yield return null;
         }
 
-
-        Destroy(lineRenderers[lineIndex].gameObject);
-        if(lineIndex > 0)
+        RemoveRoot();
+        if(currentLine >= 0)
         {
-            object[] parameters = new object[2] { lineIndex - 1, 1.0 };
-            StartCoroutine("DestroyLine",parameters);
+
+            StartCoroutine("DestroyLine");
+        }
+        else
+        {
+            hitPoints.Clear();
         }
     }
     
 
     public void NewLine()
     {
+        updating = true;
         // Create line object
         GameObject lineobj = Instantiate(lineRenderer.gameObject);
         
@@ -68,6 +74,7 @@ public class Wire : MonoBehaviour
         newline.enabled = true;
         lineRenderers.Add(newline);
         currentLine++;
+        
 
         
     }
@@ -76,9 +83,6 @@ public class Wire : MonoBehaviour
     {
         // Disable the line renderer at the start
         lineRenderer.enabled = false;
-        lineRenderers.Add(Instantiate(lineRenderer, player.position, Quaternion.identity).GetComponent<LineRenderer>());
-        lineRenderers[currentLine].enabled = true;
-        updating = true;
         AddNode();
         hitPoints.Add(0);
         transform.position = player.transform.position;
@@ -132,8 +136,7 @@ public class Wire : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            RemoveRoot();
-            player.transform.position = nodes[hitPoints[hitPoints.Count - 1]];
+            StartCoroutine("DestroyLine");
 
         }
     }
