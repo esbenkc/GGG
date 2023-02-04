@@ -131,10 +131,10 @@ LineRenderer:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 0
+    numCornerVertices: 3
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
     generateLightingData: 0
   m_UseWorldSpace: 1
@@ -154,7 +154,7 @@ MonoBehaviour:
   lineRenderer: {fileID: 9095722808547292662}
   relaxDuration: 5
   stepSize: 0.05
-  growthSpeed: 2
+  growthSpeed: 5
 --- !u!1 &9095722808800539289
 GameObject:
   m_ObjectHideFlags: 0
