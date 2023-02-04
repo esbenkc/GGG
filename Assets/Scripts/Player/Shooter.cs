@@ -14,9 +14,9 @@ public class Shooter : MonoBehaviour
     private bool movable = true;
 
     [SerializeField]
-    private float minSpeed = 0.01f, minDelay = 7.5f;
+    private float minSpeed = 0.01f, minDelay = 7.5f, whenStillDelay = 0.5f;
 
-    float delay = 0f;
+    float delay = 0f, stillDelay = 0f;
 
     // Drag the player character to send it flying
     [SerializeField] private Transform player;
@@ -72,7 +72,12 @@ public class Shooter : MonoBehaviour
 
         if(!movable) {
             delay += Time.deltaTime;
-            if (delay > minDelay && playerRigidbody.velocity.magnitude < minSpeed) {
+            if(playerRigidbody.velocity.magnitude < minSpeed) {
+                stillDelay += Time.deltaTime;
+            } else {
+                stillDelay = 0f;
+            }
+            if (delay > minDelay && playerRigidbody.velocity.magnitude < minSpeed && stillDelay > whenStillDelay) {
                 playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
                 player.position = spawnPosition;
                 movable = true;
