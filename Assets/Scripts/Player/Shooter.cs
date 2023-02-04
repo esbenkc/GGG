@@ -32,7 +32,7 @@ public class Shooter : MonoBehaviour
     // Make spanwPosition vector2
     private Vector2 spawnPosition;
 
-    public UnityEvent onPlayerHitGoal, onPlayerHitGround;
+    public UnityEvent onPlayerHitGoal, onPlayerHitGround, onPlayerShoot;
     public GameObjectEvent onPlayerHitKey;
 
     private void Start() {
@@ -61,6 +61,7 @@ public class Shooter : MonoBehaviour
         // When mouse is released send the player flying
         if (Input.GetMouseButtonUp(0) && movable) {
             Debug.Log("Mouse released");
+            onPlayerShoot.Invoke();
             lineRenderer.enabled = false;
             movable = false;
             delay = 0f;
