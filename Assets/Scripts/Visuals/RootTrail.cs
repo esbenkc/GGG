@@ -34,6 +34,8 @@ public class RootTrail : MonoBehaviour {
         for (int i = 0; i < positions.Length - 1; i++) {
             totalLength += (positions[i] - positions[i + 1]).magnitude;
         }
+
+        totalLength = Mathf.Ceil(totalLength);
     }
 
     public void StartAnimating() {
