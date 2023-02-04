@@ -29,21 +29,24 @@ public class LineRelaxer : MonoBehaviour
     float relaxDuration = 2, stepSize = 0.1f;
 
     public void Relax() {
-        List<Vector2> worldPoints = new List<Vector2>();
-
-        for (int i = 0; i < lineRenderer.positionCount; i++) {
-            Vector2 pointPosition = lineRenderer.GetPosition(i);
-            Vector2 position =
-                lineRenderer.useWorldSpace ?
-                pointPosition : lineRenderer.transform.localToWorldMatrix * new Vector4(pointPosition.x, pointPosition.y, 0, 1);
-            worldPoints.Add(position);
-        }
-
-        Relax(worldPoints, lineRenderer);
+        Relax(lineRenderer, relaxDuration, stepSize);
     }
 
-    public void Relax(List<Vector2> worldPoints, LineRenderer renderer) {
-        var scene = SceneManager.CreateScene("TempSim" + lineRenderer.GetHashCode(), new CreateSceneParameters() { localPhysicsMode = LocalPhysicsMode.Physics2D });
+    public static void Relax(LineRenderer renderer, float relaxDuration, float stepSize) {
+        List<Vector2> worldPoints = new List<Vector2>();
+
+        for (int i = 0; i < renderer.positionCount; i++) {
+            Vector2 pointPosition = renderer.GetPosition(i);
+            Vector2 position =
+                renderer.useWorldSpace ?
+                pointPosition : renderer.transform.localToWorldMatrix * new Vector4(pointPosition.x, pointPosition.y, 0, 1);
+            worldPoints.Add(position);
+        }
+        Relax(worldPoints, renderer, relaxDuration, stepSize);
+    }
+
+    public static void Relax(List<Vector2> worldPoints, LineRenderer renderer, float relaxDuration, float stepSize) {
+        var scene = SceneManager.CreateScene("TempSim" + renderer.GetHashCode(), new CreateSceneParameters() { localPhysicsMode = LocalPhysicsMode.Physics2D });
         var physicsScene = scene.GetPhysicsScene2D();
 
         var goRoot = new GameObject("Root");
@@ -114,7 +117,7 @@ public class LineRelaxer : MonoBehaviour
         for (int i = 0; i < objs.Length; i++) {
             var obj = objs[i] = new GameObject("Temp");
             SceneManager.MoveGameObjectToScene(obj, scene);
-            var pointPosition = lineRenderer.GetPosition(i);
+            var pointPosition = renderer.GetPosition(i);
             obj.transform.position = worldPoints[i];
 
             var col = obj.AddComponent<CircleCollider2D>();
@@ -137,13 +140,13 @@ public class LineRelaxer : MonoBehaviour
         for (int i = 0; i < steps; i++) {
             physicsScene.Simulate(stepSize);
         }
-        lineRenderer.positionCount = objs.Length;
+        renderer.positionCount = objs.Length;
         for (int i = 0; i < objs.Length; i++) {
             Vector2 tempPos = objs[i].transform.position;
             Vector2 position =
-                lineRenderer.useWorldSpace ?
-                 tempPos : lineRenderer.transform.worldToLocalMatrix * new Vector4(tempPos.x, tempPos.y, 0, 1);
-            lineRenderer.SetPosition(i, position);
+                renderer.useWorldSpace ?
+                 tempPos : renderer.transform.worldToLocalMatrix * new Vector4(tempPos.x, tempPos.y, 0, 1);
+            renderer.SetPosition(i, position);
         }
         SceneManager.UnloadSceneAsync(scene);
     }
