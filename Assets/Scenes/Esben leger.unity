@@ -140,7 +140,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81610008}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -162,6 +162,22 @@ PolygonCollider2D:
       - {x: -0.5, y: 0}
       - {x: 0, y: -0.25}
       - {x: 0.5, y: 0}
+--- !u!70 &81610019
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81610008}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.006348451, y: 0.008462356}
+  m_Size: {x: 0.98730904, y: 0.5345705}
+  m_Direction: 1
 --- !u!1 &145430142
 GameObject:
   m_ObjectHideFlags: 0
@@ -1732,9 +1748,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4901216468356348225, guid: 522931c87ee694b568ffa764adee75b9, type: 3}
+      propertyPath: minDelay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4901216468356348225, guid: 522931c87ee694b568ffa764adee75b9, type: 3}
       propertyPath: torquePower
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4901216468356348225, guid: 522931c87ee694b568ffa764adee75b9, type: 3}
+      propertyPath: groundHitParticles
+      value: 
+      objectReference: {fileID: 6738579553348600730, guid: 111b211f7ce66435d96f9412adc58c42, type: 3}
     - target: {fileID: 4901216468356348227, guid: 522931c87ee694b568ffa764adee75b9, type: 3}
       propertyPath: m_Enabled
       value: 0
