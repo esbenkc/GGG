@@ -8,6 +8,11 @@ public class GameObjectEvent : UnityEvent<GameObject>
 {
 }
 
+[System.Serializable]
+public class CollisionEvent : UnityEvent<Collision2D>
+{
+}
+
 public class Shooter : MonoBehaviour
 {
     [SerializeField]
@@ -33,9 +38,10 @@ public class Shooter : MonoBehaviour
     [SerializeField] private float power = 100f, torquePower = 20f;
 
     // Make spanwPosition vector2
-    private Vector2 spawnPosition;
+    private Vector2 spawnPosition, startPosition;
+    private Reset reset;
 
-    public UnityEvent onPlayerHitGoal, onPlayerHitGround;
+    public CollisionEvent onPlayerHitGoal, onPlayerHitGround;
     public GameObjectEvent onPlayerHitKey;
     private GameObject curParticleSystem;
     private float particleSystemTime = 0f;
@@ -47,12 +53,17 @@ public class Shooter : MonoBehaviour
     [SerializeField] float playerVelocitySoundMultiplier = 0.5f;
 
     private void Start() {
+        // Set the start position
+        startPosition = player.position;
         // Disable the line renderer at the start
         lineRenderer.enabled = false;
         playerRigidbody = player.GetComponent<Rigidbody2D>();
         // Freeze the player character
         playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         spawnPosition = player.position;
+        
+        // Find the reset script in the scene
+        reset = FindObjectOfType<Reset>();
     }
 
     private void Update() {
@@ -83,6 +94,13 @@ public class Shooter : MonoBehaviour
             playerAudioSource.PlayOneShot(playerJumpSound.clip, playerJumpSound.volume);
         }
 
+        if (Input.GetKeyDown(KeyCode.R)) {
+            player.position = startPosition;
+            playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            movable = true;
+            reset.ResetAll(true);
+        }
+
         if(!movable) {
             delay += Time.deltaTime;
             if(playerRigidbody.velocity.magnitude < minSpeed) {
@@ -97,6 +115,8 @@ public class Shooter : MonoBehaviour
 
                 // Play sound
                 playerAudioSource.PlayOneShot(playerResetSound.clip, playerResetSound.volume);
+
+                reset.ResetAll();
             }
         }
 
@@ -125,7 +145,7 @@ public class Shooter : MonoBehaviour
             
             playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
             spawnPosition = player.position;
-            onPlayerHitGround.Invoke();
+            onPlayerHitGround.Invoke(collision);
 
             // Play sound
             playerAudioSource.PlayOneShot(playerHitSound.clip, playerHitSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier > 1f ? 1f : playerHitSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier);
@@ -136,7 +156,7 @@ public class Shooter : MonoBehaviour
 
         if (collision.gameObject.layer ==  7) {
             playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-            onPlayerHitGoal.Invoke();
+            onPlayerHitGoal.Invoke(collision);
             // Play sound
             playerAudioSource.PlayOneShot(playerHitSound.clip, playerHitSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier > 1f ? 1f : playerHitSound.volume +playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier);
         }
