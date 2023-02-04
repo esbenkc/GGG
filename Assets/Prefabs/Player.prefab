@@ -114,12 +114,39 @@ MonoBehaviour:
   lineRenderer: {fileID: 4901216468356348230}
   power: 300
   torquePower: 5
+  onPlayerShoot:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Wire, Assembly-CSharp
+        m_MethodName: NewLine
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onPlayerHitGoal:
     m_PersistentCalls:
       m_Calls: []
   onPlayerHitGround:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Wire, Assembly-CSharp
+        m_MethodName: AddHitPoint
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onPlayerHitKey:
     m_PersistentCalls:
       m_Calls: []
@@ -136,6 +163,7 @@ MonoBehaviour:
   playerResetSound:
     clip: {fileID: 8300000, guid: 169589ff41f124700b032beb75d135fe, type: 3}
     volume: 0.641
+  playerVelocitySoundMultiplier: 0.5
 --- !u!120 &4901216468356348230
 LineRenderer:
   m_ObjectHideFlags: 0

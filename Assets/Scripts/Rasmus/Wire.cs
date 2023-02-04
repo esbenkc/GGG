@@ -31,11 +31,28 @@ public class Wire : MonoBehaviour
         lineRenderers.RemoveAt(currentLine--);
         Destroy(line.gameObject);
         int end = nodes.Count - 1;
-        int beginning = hitPoints[hitPoints.Count -2];
+        int beginning = hitPoints[hitPoints.Count - 2];
         hitPoints.RemoveAt(hitPoints.Count - 1);
         nodes.RemoveRange(beginning, end - beginning);
     }
 
+    IEnumerable DestroyLine(int lineIndex, float time)
+    {
+        float startTime = Time.timeSinceLevelLoad;
+        
+        while (startTime + time < Time.timeSinceLevelLoad)
+        {
+            yield return null;
+        }
+
+
+        Destroy(lineRenderers[lineIndex].gameObject);
+        if(lineIndex > 0)
+        {
+            object[] parameters = new object[2] { lineIndex - 1, 1.0 };
+            StartCoroutine("DestroyLine",parameters);
+        }
+    }
     
 
     public void NewLine()
@@ -67,7 +84,7 @@ public class Wire : MonoBehaviour
         transform.position = player.transform.position;
     }
     
-
+    
     void AddNode()
     {
         nodes.Add(new Vector2(player.position.x, player.position.y));
