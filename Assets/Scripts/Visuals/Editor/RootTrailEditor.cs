@@ -11,16 +11,27 @@ public class RootTrailEditor : Editor
     public override VisualElement CreateInspectorGUI() {
         VisualElement root = new VisualElement();
 
-        Button button = new Button(() => {
+        Button animateButton = new Button(() => {
             if(!Application.isPlaying) {
                 Debug.Log("Can only animate trail in Play Mode");
                 return;
             }
             ((RootTrail)serializedObject.targetObject).StartAnimating();
         });
-        button.text = "Animate";
+        animateButton.text = "Animate";
 
-        root.Add(button);
+        root.Add(animateButton);
+
+        Button revertButton = new Button(() => {
+            if (!Application.isPlaying) {
+                Debug.Log("Can only animate reverting trail in Play Mode");
+                return;
+            }
+            ((RootTrail)serializedObject.targetObject).StartReverting();
+        });
+        revertButton.text = "Revert";
+
+        root.Add(revertButton);
 
         InspectorElement.FillDefaultInspector(root, serializedObject, this);
 

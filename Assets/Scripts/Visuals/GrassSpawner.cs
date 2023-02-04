@@ -5,7 +5,7 @@ using UnityEngine;
 public class GrassSpawner : MonoBehaviour
 {
     [SerializeField]
-    LayerMask grassLayer;
+    LayerMask grassLayer = 64;
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if ((1<<collision.gameObject.layer & grassLayer.value) == 0) return;

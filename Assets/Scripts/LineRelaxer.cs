@@ -92,7 +92,14 @@ public class LineRelaxer : MonoBehaviour
                     col = boxCol;
                     var newColBox = newGo.AddComponent<BoxCollider2D>();
                     newCol = newColBox;
+                    newColBox.edgeRadius = boxCol.edgeRadius;
                     newColBox.size = boxCol.size;
+                }
+                if (goCol is CapsuleCollider2D capCol) {
+                    col = capCol;
+                    var newColCap = newGo.AddComponent<CapsuleCollider2D>();
+                    newCol = newColCap;
+                    newColCap.size = capCol.size;
                 }
                 if (col == null)
                     throw new System.Exception("Something went wrong, found no col!");
@@ -100,7 +107,8 @@ public class LineRelaxer : MonoBehaviour
                     throw new System.Exception("Something went wrong, found no new col!");
                 newCol.offset = col.offset;
                 newCol.isTrigger = col.isTrigger;
-                newCol.usedByComposite = col.usedByComposite;
+                if(newCol is not CapsuleCollider2D)
+                    newCol.usedByComposite = col.usedByComposite;
                 newCol.usedByEffector = col.usedByEffector;
             }
         }
