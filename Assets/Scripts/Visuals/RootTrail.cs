@@ -41,7 +41,7 @@ public class RootTrail : MonoBehaviour {
         if (block == null) block = new MaterialPropertyBlock();
 
         lineRenderer.enabled = true;
-        LineRelaxer.Relax(lineRenderer, relaxDuration, stepSize);
+        LineRelaxer.Relax(lineRenderer, relaxDuration, stepSize, LayerMask.NameToLayer("Trail Simulation"));
 
         UpdateTotalLength();
 

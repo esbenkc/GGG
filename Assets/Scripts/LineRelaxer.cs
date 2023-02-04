@@ -29,10 +29,10 @@ public class LineRelaxer : MonoBehaviour
     float relaxDuration = 2, stepSize = 0.1f;
 
     public void Relax() {
-        Relax(lineRenderer, relaxDuration, stepSize);
+        Relax(lineRenderer, relaxDuration, stepSize, LayerMask.NameToLayer("Trail Simulation"));
     }
 
-    public static void Relax(LineRenderer renderer, float relaxDuration, float stepSize) {
+    public static void Relax(LineRenderer renderer, float relaxDuration, float stepSize, int pointLayer) {
         List<Vector2> worldPoints = new List<Vector2>();
 
         for (int i = 0; i < renderer.positionCount; i++) {
@@ -42,10 +42,10 @@ public class LineRelaxer : MonoBehaviour
                 pointPosition : renderer.transform.localToWorldMatrix * new Vector4(pointPosition.x, pointPosition.y, 0, 1);
             worldPoints.Add(position);
         }
-        Relax(worldPoints, renderer, relaxDuration, stepSize);
+        Relax(worldPoints, renderer, relaxDuration, stepSize, pointLayer);
     }
 
-    public static void Relax(List<Vector2> worldPoints, LineRenderer renderer, float relaxDuration, float stepSize) {
+    public static void Relax(List<Vector2> worldPoints, LineRenderer renderer, float relaxDuration, float stepSize, int pointLayer) {
         var scene = SceneManager.CreateScene("TempSim" + renderer.GetHashCode(), new CreateSceneParameters() { localPhysicsMode = LocalPhysicsMode.Physics2D });
         var physicsScene = scene.GetPhysicsScene2D();
 
@@ -67,6 +67,7 @@ public class LineRelaxer : MonoBehaviour
         foreach(var go in hierarchy.gos) {
             var newGo = new GameObject(go.name);
             SceneManager.MoveGameObjectToScene(newGo, scene);
+            newGo.layer = go.layer;
             var oldTransform = go.transform;
             var newTransform = newGo.transform;
             newTransform.localPosition = oldTransform.localPosition;
@@ -124,8 +125,8 @@ public class LineRelaxer : MonoBehaviour
         Rigidbody2D[] rbs = new Rigidbody2D[objs.Length];
         for (int i = 0; i < objs.Length; i++) {
             var obj = objs[i] = new GameObject("Temp");
+            obj.layer = pointLayer;
             SceneManager.MoveGameObjectToScene(obj, scene);
-            var pointPosition = renderer.GetPosition(i);
             obj.transform.position = worldPoints[i];
 
             var col = obj.AddComponent<CircleCollider2D>();
