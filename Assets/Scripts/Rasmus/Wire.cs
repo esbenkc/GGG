@@ -71,7 +71,7 @@ public class Wire : MonoBehaviour
       
         newline.positionCount += 1;
         newline.SetPosition(0, player.position);
-        newline.enabled = true;
+        //newline.enabled = true;
         lineRenderers.Add(newline);
         currentLine++;
         
@@ -101,7 +101,9 @@ public class Wire : MonoBehaviour
         {
             LineRenderer oldLine = lineRenderers[lineRenderers.Count - 1];
             oldLine.SetPosition(oldLine.positionCount - 1, player.position);
+            //oldLine.GetComponent<RootTrail>().StartAnimating();    
         }
+        lineRenderers[currentLine].GetComponent<RootTrail>().StartAnimating();
         hitPoints.Add(nodes.Count - 1);
         //NewLine();
     }
