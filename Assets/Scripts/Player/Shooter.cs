@@ -8,6 +8,16 @@ public class GameObjectEvent : UnityEvent<GameObject>
 {
 }
 
+[System.Serializable]
+public class CollisionEvent : UnityEvent<Collision2D>
+{
+}
+
+[System.Serializable]
+public class TriggerEvent : UnityEvent<Collider2D>
+{
+}
+
 public class Shooter : MonoBehaviour
 {
     [SerializeField]
@@ -33,26 +43,39 @@ public class Shooter : MonoBehaviour
     [SerializeField] private float power = 100f, torquePower = 20f;
 
     // Make spanwPosition vector2
-    private Vector2 spawnPosition;
+    private Vector2 spawnPosition, startPosition;
+    private Reset reset;
 
-    public UnityEvent onPlayerHitGoal, onPlayerHitGround;
+    public CollisionEvent onPlayerHitGround;
+    public TriggerEvent onPlayerHitGoal;
     public GameObjectEvent onPlayerHitKey;
     private GameObject curParticleSystem;
     private float particleSystemTime = 0f;
 
     // Create a title in the inspector
-    [Header("Player Settings")]
+    [Header("Audio settings")]
     [SerializeField] AudioSource playerAudioSource;
     [SerializeField] Audio playerJumpSound, playerHitSound, playerBounceSound, playerResetSound;
     [SerializeField] float playerVelocitySoundMultiplier = 0.5f;
 
+    [Header("Goal moving settings")]
+    [SerializeField] AnimationCurve speedCurve;
+    [SerializeField] float stepMoveTime = 1f;
+
+    private Vector3[] goalPositions;
+
     private void Start() {
+        // Set the start position
+        startPosition = player.position;
         // Disable the line renderer at the start
         lineRenderer.enabled = false;
         playerRigidbody = player.GetComponent<Rigidbody2D>();
         // Freeze the player character
         playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         spawnPosition = player.position;
+        
+        // Find the reset script in the scene
+        reset = FindObjectOfType<Reset>();
     }
 
     private void Update() {
@@ -83,6 +106,13 @@ public class Shooter : MonoBehaviour
             playerAudioSource.PlayOneShot(playerJumpSound.clip, playerJumpSound.volume);
         }
 
+        if (Input.GetKeyDown(KeyCode.R)) {
+            player.position = startPosition;
+            playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            movable = true;
+            reset.ResetAll(true);
+        }
+
         if(!movable) {
             delay += Time.deltaTime;
             if(playerRigidbody.velocity.magnitude < minSpeed) {
@@ -97,6 +127,8 @@ public class Shooter : MonoBehaviour
 
                 // Play sound
                 playerAudioSource.PlayOneShot(playerResetSound.clip, playerResetSound.volume);
+
+                reset.ResetAll();
             }
         }
 
@@ -125,7 +157,7 @@ public class Shooter : MonoBehaviour
             
             playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
             spawnPosition = player.position;
-            onPlayerHitGround.Invoke();
+            onPlayerHitGround.Invoke(collision);
 
             // Play sound
             playerAudioSource.PlayOneShot(playerHitSound.clip, playerHitSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier > 1f ? 1f : playerHitSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier);
@@ -134,16 +166,58 @@ public class Shooter : MonoBehaviour
             playerAudioSource.PlayOneShot(playerBounceSound.clip, playerBounceSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier > 1f ? 1f : playerBounceSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier);
         }
 
-        if (collision.gameObject.layer ==  7) {
-            playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-            onPlayerHitGoal.Invoke();
-            // Play sound
-            playerAudioSource.PlayOneShot(playerHitSound.clip, playerHitSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier > 1f ? 1f : playerHitSound.volume +playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier);
-        }
-
         if (collision.gameObject.layer ==  8) {
             onPlayerHitKey.Invoke(collision.gameObject);
         }
+    }
+
+    // When hitting trigger layer 7 (goal) follow the Goal's linerenderer path and move the player along it
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject.layer ==  7) {
+            movable = false;
+            playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            // Get all positions in the goal's linerenderer
+            LineRenderer otherLR = collision.GetComponent<LineRenderer>();
+            // Make goalPositions the same length as the goal's linerenderer
+            Vector3[] goalPositions = new Vector3[otherLR.positionCount];
+            otherLR.GetPositions(goalPositions);
+            StartCoroutine(MoveAlongPath(goalPositions));
+            onPlayerHitGoal.Invoke(collision);
+            // Play sound
+            playerAudioSource.PlayOneShot(playerHitSound.clip, playerHitSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier > 1f ? 1f : playerHitSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier);
+        }
+    }
+
+    // Coroutine to move the player along the path of the goal
+    private IEnumerator MoveAlongPath(Vector3[] stepPositions) {
+        float timer = 0f;
+        int currentStep = 0;
+        movable = false;
+        playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        gameObject.GetComponent<Collider2D>().enabled = false;
+        
+        // Move the player along the path
+        while (timer < stepMoveTime)  {
+            timer += Time.deltaTime;
+            if (currentStep == stepPositions.Length - 1) {
+                player.position = stepPositions[stepPositions.Length - 1];
+                break;
+            }
+            player.position = Vector3.Lerp(stepPositions[currentStep], stepPositions[currentStep + 1], timer / stepMoveTime);
+            if(timer > stepMoveTime) {
+                currentStep++;
+                timer = 0f;
+            }
+            yield return null;
+        }
+
+        // Set the player to the last position
+        player.position = stepPositions[stepPositions.Length - 1];
+        gameObject.GetComponent<Collider2D>().enabled = true;
+        playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        startPosition = player.position;
+        spawnPosition = player.position;
+        movable = true;
     }
 }
 
