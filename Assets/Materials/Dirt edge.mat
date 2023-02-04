@@ -49,7 +49,7 @@ Material:
         m_Scale: {x: 5, y: 5}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: cf897339da4a4f143a4df3b44d53dc61, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Main_Texture:
@@ -110,7 +110,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.38679248, g: 0.28929615, b: 0.21346566, a: 1}
+    - _Color: {r: 0.735849, g: 0.59471124, b: 0.5588287, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _GrassNormal: {r: 0, g: 1, b: 0, a: 0}
