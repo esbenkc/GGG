@@ -10,6 +10,12 @@ public class GrassComponent : MonoBehaviour
     float grassStrength = 0;
 
     [SerializeField]
+    AnimationCurve onHitCurve = new AnimationCurve(new Keyframe[] { new Keyframe(0, 0), new Keyframe(1, 0.5f) });
+
+    [SerializeField]
+    float animationTime = 2;
+
+    [SerializeField]
     Vector2 grassPoint = Vector2.zero;
 
     [SerializeField]
@@ -19,7 +25,19 @@ public class GrassComponent : MonoBehaviour
     SpriteShapeRenderer spriteRenderer = null;
 
     MaterialPropertyBlock block;
-    // Start is called before the first frame update
+
+    bool animating = false;
+    float startTime;
+
+    public void StartAnimating() {
+        animating = true;
+        startTime = Time.time;
+    }
+    public void StartAnimating(Vector2 worldPosition, Vector2 worldNormal) {
+        grassPoint = transform.worldToLocalMatrix * new Vector4(worldPosition.x, worldPosition.y, 0, 1);
+        grassNormal = transform.worldToLocalMatrix * new Vector4(worldNormal.x, worldNormal.y, 0, 0);
+        StartAnimating();
+    }
 
     private void OnValidate() {
         UpdateGrass();
@@ -28,6 +46,17 @@ public class GrassComponent : MonoBehaviour
     void Start()
     {
         UpdateGrass();
+    }
+
+    private void Update() {
+        if (animating) {
+            float t = (Time.time - startTime) / animationTime;
+
+            grassStrength = onHitCurve.Evaluate(t);
+            UpdateGrass();
+
+            if (t >= 1) animating = false;
+        }
     }
 
     private void UpdateGrass() {
