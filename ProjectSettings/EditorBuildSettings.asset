@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/Main Menu.unity
+    guid: 65b13ce8aac1f424a9cc3dead77c754e
+  - enabled: 1
+    path: Assets/Scenes/Esben leger.unity
+    guid: 0b51f5a61cae54582a14ecf5ba35600a
   m_configObjects: {}
