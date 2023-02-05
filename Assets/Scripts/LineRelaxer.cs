@@ -54,7 +54,7 @@ public class LineRelaxer : MonoBehaviour
 
         // Duplicate scene colliders
 
-        var cols = FindObjectsByType<Collider2D>(FindObjectsSortMode.None);
+        var cols = FindObjectsOfType<Collider2D>(FindObjectsSortMode.None);
         GOHierarchy hierarchy = new GOHierarchy();
 
         foreach (var col in cols) {
