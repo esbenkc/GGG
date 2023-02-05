@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: 65b13ce8aac1f424a9cc3dead77c754e
   - enabled: 1
-    path: Assets/Scenes/Esben leger.unity
-    guid: 0b51f5a61cae54582a14ecf5ba35600a
+    path: Assets/Scenes/ConnectedLevels.unity
+    guid: 5d3cb8d5af29e0047bf8a5acb20ea9df
   m_configObjects: {}
