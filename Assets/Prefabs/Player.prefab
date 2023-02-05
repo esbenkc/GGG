@@ -153,8 +153,11 @@ MonoBehaviour:
       m_Calls: []
   playerAudioSource: {fileID: 9197616421297793782}
   playerJumpSound:
-    clip: {fileID: 8300000, guid: b66ef1ec3832b47c4a5bc7241c700a4b, type: 3}
+    clip: {fileID: 8300000, guid: 384e7ddb53d6d1445b96ea0b31280002, type: 3}
     volume: 1
+  playerAimSound:
+    clip: {fileID: 8300000, guid: 75936521db9565743972f3ce9ab138f5, type: 3}
+    volume: 0.578
   playerHitSound:
     clip: {fileID: 8300000, guid: 13b7157f2ba6545228699093f331d8bb, type: 3}
     volume: 0.678
@@ -164,6 +167,9 @@ MonoBehaviour:
   playerResetSound:
     clip: {fileID: 8300000, guid: 51756d0779aa54a9bb1aa063001b9c0d, type: 3}
     volume: 0.641
+  tunnelDig:
+    clip: {fileID: 0}
+    volume: 0
   playerVelocitySoundMultiplier: 0.5
   speedCurve:
     serializedVersion: 2
