@@ -57,13 +57,14 @@ public class Shooter : MonoBehaviour
     // Create a title in the inspector
     [Header("Audio settings")]
     [SerializeField] AudioSource playerAudioSource;
-    [SerializeField] Audio playerJumpSound, playerHitSound, playerBounceSound, playerResetSound, tunnelDig;
+    [SerializeField] Audio playerJumpSound, playerAimSound, playerHitSound, playerBounceSound, playerResetSound, tunnelDig;
     [SerializeField] float playerVelocitySoundMultiplier = 0.5f;
 
     [Header("Goal moving settings")]
     [SerializeField] AnimationCurve speedCurve;
     [SerializeField] float stepMoveTime = 1f;
 
+    private Vector2 groundNormal;
 
     private Vector3[] goalPositions;
     
@@ -87,6 +88,7 @@ public class Shooter : MonoBehaviour
         // Draw a line from the player to the mouse position when left mouse is pressed
         if (Input.GetMouseButtonDown(0) && movable) {
             lineRenderer.enabled = true;
+            playerAudioSource.PlayOneShot(playerAimSound.clip, playerAimSound.volume);//Simons nye lyd
         }
 
         // And keep it updated as the mouse is kept down
@@ -134,7 +136,7 @@ public class Shooter : MonoBehaviour
 
                     inTunnel = true;
                     StartCoroutine(MoveThroughTunnel(exitPoint));
-                    
+                    groundNormal = hit.normal;
                     playerAudioSource.PlayOneShot(playerHitSound.clip, playerHitSound.volume);
                 }
             }
@@ -166,6 +168,11 @@ public class Shooter : MonoBehaviour
         lineRenderer.enabled = false;
         movable = false;
         delay = 0f;
+        // offset player in the ground normal direction to avoid collisions with ground 
+        transform.position = (Vector2)transform.position +  groundNormal * 0.2f;
+        groundNormal = Vector2.zero;
+
+
         playerRigidbody.constraints = RigidbodyConstraints2D.None;
         playerRigidbody.AddForce((player.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)) * power);
         // Add randmo angular momentum
