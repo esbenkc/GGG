@@ -150,16 +150,16 @@ MonoBehaviour:
       m_Calls: []
   playerAudioSource: {fileID: 9197616421297793782}
   playerJumpSound:
-    clip: {fileID: 8300000, guid: 649a2508a323846ba9fe65e521854789, type: 3}
+    clip: {fileID: 8300000, guid: b66ef1ec3832b47c4a5bc7241c700a4b, type: 3}
     volume: 1
   playerHitSound:
-    clip: {fileID: 8300000, guid: 3e74dd98444444b98850c13377d11b5b, type: 3}
-    volume: 0.174
+    clip: {fileID: 8300000, guid: 13b7157f2ba6545228699093f331d8bb, type: 3}
+    volume: 0.292
   playerBounceSound:
-    clip: {fileID: 8300000, guid: 00813a0c6f8004363b16695da81a25b0, type: 3}
-    volume: 0.367
+    clip: {fileID: 8300000, guid: fbaecd6c45b0b4a3985b0db239888be0, type: 3}
+    volume: 0.515
   playerResetSound:
-    clip: {fileID: 8300000, guid: 169589ff41f124700b032beb75d135fe, type: 3}
+    clip: {fileID: 8300000, guid: 51756d0779aa54a9bb1aa063001b9c0d, type: 3}
     volume: 0.641
   playerVelocitySoundMultiplier: 0.5
   speedCurve:
