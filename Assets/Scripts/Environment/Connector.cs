@@ -11,6 +11,10 @@ public class Connector : MonoBehaviour
 
     [SerializeField]
     private float flipTime = 1.0f, delayBeforeInteractable = 2.0f;
+    
+    [SerializeField] Audio click, run, flip;
+
+    private AudioSource audioSource;
 
     private float flipTimer = 0.0f;
 
@@ -23,6 +27,8 @@ public class Connector : MonoBehaviour
     
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         lineRenderer = GetComponent<LineRenderer>();
 
         lineRenderer.SetPosition(0, on.position);
@@ -44,6 +50,9 @@ public class Connector : MonoBehaviour
     }
 
     public void Reset(bool full = false) {
+        // Play the click sound
+        audioSource.PlayOneShot(flip.clip, flip.volume);
+        
         // Reset the connectors
         if(full) {
             connectCol1.isTrigger = initStatus;
@@ -68,6 +77,12 @@ public class Connector : MonoBehaviour
     // Create a coroutine that flips the connectors
     IEnumerator FlipConnectors() {        
 
+        // Play the click sound
+        audioSource.PlayOneShot(click.clip, click.volume);
+
+        // Start the running sound
+        audioSource.PlayOneShot(run.clip, run.volume);
+
         // While the timer is less than the flip time
         while (flipTimer < flipTime) {
             // Increment the timer
@@ -82,6 +97,12 @@ public class Connector : MonoBehaviour
             // Wait for the next frame
             yield return null;
         }
+
+        // Stop the running sound
+        audioSource.Stop();
+
+        // Play the flip sound
+        audioSource.PlayOneShot(flip.clip, flip.volume);
 
         // Swap the triggers
         bool temp = connectCol1.isTrigger;
