@@ -908,6 +908,9 @@ MonoBehaviour:
   wireNodePrefab: {fileID: 89000909286299442, guid: 3cabdfdfbc3a743e08349e1be4d291cb, type: 3}
   player: {fileID: 1971848548}
   maxDistance: 1
+  hitPoints: 
+  nodes: []
+  lineRenderers: []
   lineRenderer: {fileID: 873017612}
 --- !u!4 &873017614
 Transform:
@@ -1166,8 +1169,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d51d3012dd9f44c6ba79cc08f87cea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connector1: {fileID: 0}
-  connector2: {fileID: 0}
+  on: {fileID: 0}
+  off: {fileID: 0}
+  flipGreen: {r: 0, g: 1, b: 0, a: 1}
+  flipRed: {r: 1, g: 0, b: 0, a: 1}
+  intermediateColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  flipTime: 1
+  delayBeforeInteractable: 2
 --- !u!120 &1455035434
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1852,6 +1860,10 @@ PrefabInstance:
     - target: {fileID: 4901216468356348225, guid: 522931c87ee694b568ffa764adee75b9, type: 3}
       propertyPath: torquePower
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4901216468356348225, guid: 522931c87ee694b568ffa764adee75b9, type: 3}
+      propertyPath: onPlayerHitGround.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4901216468356348227, guid: 522931c87ee694b568ffa764adee75b9, type: 3}
       propertyPath: m_Enabled

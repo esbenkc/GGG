@@ -46,8 +46,10 @@ public class Shooter : MonoBehaviour
     private Vector2 spawnPosition, startPosition;
     private Reset reset;
 
+    public UnityEvent onPlayerShoot;
     public CollisionEvent onPlayerHitGround;
     public TriggerEvent onPlayerHitGoal;
+
     public GameObjectEvent onPlayerHitKey;
     private GameObject curParticleSystem;
     private float particleSystemTime = 0f;
@@ -101,6 +103,7 @@ public class Shooter : MonoBehaviour
 
         // When mouse is released send the player flying
         if (Input.GetMouseButtonUp(0) && movable) {
+
             // Send raycast and check it if it goes through earth
             Vector2 direction = -(Camera.main.ScreenToWorldPoint(Input.mousePosition) - player.position).normalized;
             RaycastHit2D hit = Physics2D.Raycast(player.position, direction, 0.5f, LayerMask.GetMask("Earth"));
