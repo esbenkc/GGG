@@ -59,7 +59,8 @@ public class LineRelaxer : MonoBehaviour
 
         foreach (var col in cols) {
             var go = col.gameObject;
-            hierarchy.Add(col.gameObject);
+            if(go.layer != LayerMask.NameToLayer("Player"))
+                hierarchy.Add(go);
         }
 
         Dictionary<GameObject, GameObject> mapping = new Dictionary<GameObject, GameObject>();

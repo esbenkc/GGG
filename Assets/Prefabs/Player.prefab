@@ -133,7 +133,7 @@ MonoBehaviour:
       - m_Target: {fileID: 4901216468848976863}
         m_TargetAssemblyTypeName: Wire, Assembly-CSharp
         m_MethodName: AddHitPoint
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -431,42 +431,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4901216468356348231}
     m_Modifications:
-    - target: {fileID: 9095722808547292662, guid: c2bc43b3235bbe04b82a98394dd2c467, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9095722808547292662, guid: c2bc43b3235bbe04b82a98394dd2c467, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: c1ac7c0e7e41a59468581ff93b52ab19, type: 2}
-    - target: {fileID: 9095722808547292662, guid: c2bc43b3235bbe04b82a98394dd2c467, type: 3}
-      propertyPath: m_Parameters.numCornerVertices
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 9095722808547292662, guid: c2bc43b3235bbe04b82a98394dd2c467, type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9095722808547292662, guid: c2bc43b3235bbe04b82a98394dd2c467, type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9095722808547292662, guid: c2bc43b3235bbe04b82a98394dd2c467, type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9095722808547292662, guid: c2bc43b3235bbe04b82a98394dd2c467, type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9095722808547292662, guid: c2bc43b3235bbe04b82a98394dd2c467, type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9095722808547292662, guid: c2bc43b3235bbe04b82a98394dd2c467, type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.r
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9095722808800539289, guid: c2bc43b3235bbe04b82a98394dd2c467, type: 3}
       propertyPath: m_Name
       value: Wire
@@ -549,29 +513,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fc45ee7e6ce641a9b702b5387a3a825, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!120 &4901216469134730418 stripped
-LineRenderer:
-  m_CorrespondingSourceObject: {fileID: 9095722808547292662, guid: c2bc43b3235bbe04b82a98394dd2c467, type: 3}
-  m_PrefabInstance: {fileID: 4197040242880991556}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4901216469134730419 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9095722808547292663, guid: c2bc43b3235bbe04b82a98394dd2c467, type: 3}
-  m_PrefabInstance: {fileID: 4197040242880991556}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &689172596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4901216469134730419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86724feff2e2aaa40855f1e310887123, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lineRenderer: {fileID: 4901216469134730418}
-  relaxDuration: 2
-  stepSize: 0.05
-  growthSpeed: 2

@@ -25,6 +25,9 @@ public class Wire : MonoBehaviour
     // update line renderer when moving
     private bool updating = false;
     private int currentLine = -1;
+    private Vector2 lastHit;
+    private bool hasLastHit = false;
+
     public void RemoveRoot()
     {
         var line = lineRenderers[currentLine];
@@ -70,7 +73,7 @@ public class Wire : MonoBehaviour
 
       
         newline.positionCount += 1;
-        newline.SetPosition(0, player.position);
+        newline.SetPosition(0, hasLastHit ? lastHit : player.position);
         //newline.enabled = true;
         lineRenderers.Add(newline);
         currentLine++;
@@ -99,14 +102,15 @@ public class Wire : MonoBehaviour
     }
     public void AddHitPoint(Collision2D coll)
     {
-        AddNode(coll.contacts[0].point);
+        lastHit = coll.contacts[0].point;
+        hasLastHit = true;
+
         if (currentLine != 0)
         {
             LineRenderer oldLine = lineRenderers[lineRenderers.Count - 1];
-            oldLine.SetPosition(oldLine.positionCount - 1, player.position);
+            oldLine.SetPosition(oldLine.positionCount - 1, lastHit);
             oldLine.GetComponent<RootTrail>().StartAnimating();
         }
-        lineRenderers[currentLine].GetComponent<RootTrail>().StartAnimating();
         hitPoints.Add(nodes.Count - 1);
         //NewLine();
     }
