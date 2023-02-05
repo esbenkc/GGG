@@ -77,9 +77,6 @@ public class Wire : MonoBehaviour
         //newline.enabled = true;
         lineRenderers.Add(newline);
         currentLine++;
-        
-
-        
     }
     // Start is called before the first frame update
     void Start()

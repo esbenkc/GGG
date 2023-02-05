@@ -105,7 +105,7 @@ public class Shooter : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && movable) {
 
             // Send raycast and check it if it goes through earth
-            Vector2 direction = -(Camera.main.ScreenToWorldPoint(Input.mousePosition) - player.position).normalized;
+            Vector2 direction = ((Vector2)(player.position - Camera.main.ScreenToWorldPoint(Input.mousePosition))).normalized;
             RaycastHit2D hit = Physics2D.Raycast(player.position, direction, 0.5f, LayerMask.GetMask("Earth"));
             if (!hit) {
                 Jump();
@@ -116,12 +116,12 @@ public class Shooter : MonoBehaviour
                 RaycastHit2D[] reverseHits = Physics2D.RaycastAll(new Vector2(player.position.x, player.position.y) + direction * 20f, reverseDirection, 20f, LayerMask.GetMask("Earth"));
                 Vector2 exitPoint = reverseHits[reverseHits.Length - 1].point;
                 float distanceToExitPoint = Vector2.Distance(player.position, exitPoint);
-                RaycastHit2D[] blockedExit = Physics2D.RaycastAll(player.position, direction.normalized, distanceToExitPoint + 0.3f);
+                RaycastHit2D[] blockedExit = Physics2D.RaycastAll(player.position, direction, distanceToExitPoint + 0.3f);
                 bool blocked = false;
 
                 // Create a Unity gizmo for the blockedExit
-                Debug.DrawLine(player.position, new Vector2(player.position.x, player.position.y) + direction * (distanceToExitPoint + 0.3f), Color.red, 1f);
-                Debug.DrawLine(player.position, exitPoint, Color.green, 1f);
+                //Debug.DrawLine(player.position, new Vector2(player.position.x, player.position.y) + direction * (distanceToExitPoint + 0.3f), Color.red, 1f);
+                //Debug.DrawLine(player.position, exitPoint, Color.green, 1f);
 
                 foreach(RaycastHit2D hit2 in blockedExit) {
                     if (hit2.collider.gameObject.layer != LayerMask.NameToLayer("Earth") && hit2.collider.gameObject.layer != LayerMask.NameToLayer("Player")) {
@@ -175,6 +175,9 @@ public class Shooter : MonoBehaviour
     }
 
     void Jump() {
+        if (onPlayerShoot != null)
+            onPlayerShoot.Invoke();
+
         lineRenderer.enabled = false;
         movable = false;
         delay = 0f;
