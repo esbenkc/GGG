@@ -70,6 +70,7 @@ public class Shooter : MonoBehaviour
     [Header("Earth traversal")]
     [SerializeField] GameObject tunnel;
     bool inTunnel = false;
+    bool nextLandingIsSpawn = false;
 
 
     private void Start() {
@@ -86,8 +87,6 @@ public class Shooter : MonoBehaviour
         // Draw a line from the player to the mouse position when left mouse is pressed
         if (Input.GetMouseButtonDown(0) && movable) {
             lineRenderer.enabled = true;
-            lineRenderer.SetPosition(0, player.position);
-            lineRenderer.SetPosition(1, Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
 
         // And keep it updated as the mouse is kept down
@@ -218,6 +217,11 @@ public class Shooter : MonoBehaviour
         // If the player hits the ground, unfreeze it
         // ONly when it hits "Earth", layer 6
         if (collision.gameObject.layer ==  6) {
+            if(nextLandingIsSpawn) {
+                spawnPosition = player.position;
+                nextLandingIsSpawn = false;
+            }
+
             movable = true;
             curParticleSystem = Instantiate(groundHitParticles, player.position, Quaternion.identity);
             // Set the particle system speed and amount based on velocity of player
@@ -271,6 +275,7 @@ public class Shooter : MonoBehaviour
 
     // Coroutine to move the player along the path of the goal
     private IEnumerator MoveAlongPath(Vector3[] stepPositions, Goal goal) {
+        int numSteps = stepPositions.Length;
         float timer = 0f;
         int currentStep = 0;
         movable = false;
@@ -281,7 +286,7 @@ public class Shooter : MonoBehaviour
         while (timer < stepMoveTime)  {
             delay = 0;
             timer += Time.deltaTime;
-            if (currentStep == stepPositions.Length - 1) {
+            if (currentStep == numSteps - 1) {
                 break;
             }
             player.position = Vector3.Lerp(stepPositions[currentStep], stepPositions[currentStep + 1], timer / stepMoveTime);
@@ -293,11 +298,13 @@ public class Shooter : MonoBehaviour
         }
 
         // Set the player to the last position
-        player.position = stepPositions[stepPositions.Length - 1];
+        player.position = stepPositions[numSteps - 1];
         gameObject.GetComponent<Collider2D>().enabled = true;
         playerRigidbody.constraints = RigidbodyConstraints2D.None;
+        playerRigidbody.velocity = numSteps > 1 ? (stepPositions[numSteps - 1] - stepPositions[numSteps - 2]) / stepMoveTime : Vector2.zero;
         playerRigidbody.simulated = true;
         spawnPosition = player.position;
+        nextLandingIsSpawn = true;
         movable = false;
         delay = 0;
 
