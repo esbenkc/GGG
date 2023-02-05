@@ -38,7 +38,10 @@ public class Wire : MonoBehaviour
         //hitPoints.RemoveAt(hitPoints.Count - 1);
         //nodes.RemoveRange(beginning, end - beginning);
     }
-
+    public void RemoveAllRoots()
+    {
+        StartCoroutine("DestroyLine");
+    }
     
 
     IEnumerator DestroyLine()
@@ -48,7 +51,7 @@ public class Wire : MonoBehaviour
         RootTrail trail = line.GetComponent<RootTrail>();
         trail.StartReverting();
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(trail.GetRevertTime());
         
 
         RemoveRoot();
@@ -103,6 +106,12 @@ public class Wire : MonoBehaviour
     public void AddHitPoint(Collision2D coll)
     {
         lastHit = coll.contacts[0].point;
+        if (hasBeenShot)
+        {
+            lineRenderers[currentLine].GetComponent<RootTrail>().StartAnimating();
+            hasBeenShot = false;
+        }
+
         hasLastHit = true;
 
         if (currentLine != 0)
@@ -115,19 +124,19 @@ public class Wire : MonoBehaviour
                 nodes.Add(player.transform.position);
                 hitPoints[hitPoints.Count - 1] = nodes.Count - 1;
             }
-            else
-            {
-                oldLine.GetComponent<RootTrail>().StartAnimating();
-            }
+            
+
         }
         if (hitPoints.Count < lineRenderers.Count)
         {
+
             hitPoints.Add(nodes.Count - 1);
 
         }
+
         //NewLine();
     }
-    
+
 
     public void UpdateLine()
     {
@@ -143,7 +152,12 @@ public class Wire : MonoBehaviour
 
     public void StopUpdating()
     {
+        AddNode();
         updating = false;
+    }
+    public void StartUpdating()
+    {
+        updating = true;
     }
     // Update is called once per frame
     void Update()
@@ -156,10 +170,6 @@ public class Wire : MonoBehaviour
 
         UpdateLine();
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            StartCoroutine("DestroyLine");
-
-        }
+        
     }
 }
