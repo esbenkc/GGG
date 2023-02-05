@@ -45,10 +45,11 @@ public class Wire : MonoBehaviour
     {
         float startTime = Time.timeSinceLevelLoad;
         LineRenderer line = lineRenderers[currentLine];
-        while (startTime + 2 < Time.timeSinceLevelLoad)
-        {
-            yield return null;
-        }
+        RootTrail trail = line.GetComponent<RootTrail>();
+        trail.StartReverting();
+
+        yield return new WaitForSeconds(2);
+        
 
         RemoveRoot();
         if(currentLine >= 0)
