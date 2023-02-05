@@ -154,10 +154,10 @@ MonoBehaviour:
     volume: 1
   playerHitSound:
     clip: {fileID: 8300000, guid: 13b7157f2ba6545228699093f331d8bb, type: 3}
-    volume: 0.292
+    volume: 0.678
   playerBounceSound:
-    clip: {fileID: 8300000, guid: fbaecd6c45b0b4a3985b0db239888be0, type: 3}
-    volume: 0.515
+    clip: {fileID: 8300000, guid: 6b5c9587b00404070a5aa7b9dd1bac4f, type: 3}
+    volume: 0.807
   playerResetSound:
     clip: {fileID: 8300000, guid: 51756d0779aa54a9bb1aa063001b9c0d, type: 3}
     volume: 0.641
