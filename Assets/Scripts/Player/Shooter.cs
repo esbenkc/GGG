@@ -144,7 +144,7 @@ public class Shooter : MonoBehaviour
         }
 
         // Reset the player's position
-        if (Input.GetKeyDown(KeyCode.R)) {
+        if (movable && Input.GetKeyDown(KeyCode.R)) {
             ResetPlayer();
         }
 
@@ -270,7 +270,7 @@ public class Shooter : MonoBehaviour
                     goalPositions[i] = collision.transform.localToWorldMatrix * new Vector4(pos.x, pos.y, 0, 1);
                 }
             }
-            StartCoroutine(MoveAlongPath(goalPositions));
+            StartCoroutine(MoveAlongPath(goalPositions, goal));
             onPlayerHitGoal.Invoke(collision);
             // Play sound
             playerAudioSource.PlayOneShot(playerHitSound.clip, playerHitSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier > 1f ? 1f : playerHitSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier);
@@ -278,7 +278,7 @@ public class Shooter : MonoBehaviour
     }
 
     // Coroutine to move the player along the path of the goal
-    private IEnumerator MoveAlongPath(Vector3[] stepPositions) {
+    private IEnumerator MoveAlongPath(Vector3[] stepPositions, Goal goal) {
         float timer = 0f;
         int currentStep = 0;
         movable = false;
@@ -307,6 +307,8 @@ public class Shooter : MonoBehaviour
         playerRigidbody.simulated = true;
         spawnPosition = player.position;
         movable = false;
+
+        goal.Exit();
     }
 
     private void ResetPlayer() {
