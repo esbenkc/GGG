@@ -28,18 +28,25 @@ public class Wire : MonoBehaviour
     private Vector2 lastHit;
     private bool hasLastHit = false;
 
-    public void RemoveRoot()
+    public void RemoveRoot(LineRenderer line)
     {
-        var line = lineRenderers[currentLine];
-        lineRenderers.RemoveAt(currentLine--);
         Destroy(line.gameObject);
         //int end = nodes.Count - 1;
         //int beginning = hitPoints[hitPoints.Count - 1];
         //hitPoints.RemoveAt(hitPoints.Count - 1);
         //nodes.RemoveRange(beginning, end - beginning);
     }
+    Stack<LineRenderer> linesToBeRemoved;
     public void RemoveAllRoots()
     {
+        linesToBeRemoved = new Stack<LineRenderer>(lineRenderers.ToArray());
+        lineRenderers = new List<LineRenderer>();
+        currentLine = -1;
+        hasLastHit = false;
+        NewLine();
+        nodes.Clear();
+        hitPoints.Clear();
+        nodes.Add(player.position);
         StartCoroutine("DestroyLine");
     }
     
@@ -47,22 +54,21 @@ public class Wire : MonoBehaviour
     IEnumerator DestroyLine()
     {
         float startTime = Time.timeSinceLevelLoad;
-        LineRenderer line = lineRenderers[currentLine];
+        LineRenderer line = linesToBeRemoved.Pop();
         RootTrail trail = line.GetComponent<RootTrail>();
         trail.StartReverting();
 
         yield return new WaitForSeconds(trail.GetRevertTime());
         
 
-        RemoveRoot();
-        if(currentLine >= 0)
+        RemoveRoot(line);
+        if(linesToBeRemoved.Count > 0)
         {
 
             StartCoroutine("DestroyLine");
         }
         else
         {
-            
             hitPoints.Clear();
         }
     }
@@ -136,7 +142,7 @@ public class Wire : MonoBehaviour
 
         //NewLine();
     }
-
+    
 
     public void UpdateLine()
     {
