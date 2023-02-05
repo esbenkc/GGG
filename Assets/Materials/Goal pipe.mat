@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Goal pipe
-  m_Shader: {fileID: 4800000, guid: e260cfa7296ee7642b167f1eb5be5023, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 530eb0dcec6c33143a1026debe67e5c3, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _FLIPBOOKBLENDING_OFF
@@ -47,6 +47,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GlowTexture:
+        m_Texture: {fileID: 2800000, guid: 763bab2d1d535eb47ae765fb85991f7e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _GrassTexture:
@@ -118,6 +122,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _GlowStrength: 2.27
     - _GrassStrength: 0
     - _Metallic: 0
     - _Mode: 0
@@ -143,6 +148,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _GlowColor: {r: 0.9056604, g: 0.83341616, b: 0.44001427, a: 1}
     - _GrassPoint: {r: 0, g: 0, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
