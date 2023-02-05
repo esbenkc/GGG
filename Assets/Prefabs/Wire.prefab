@@ -83,7 +83,16 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.09637833
+        value: 0.1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.5
+        value: 0.085
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -92,7 +101,7 @@ LineRenderer:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 0.12047881
+        value: 0.1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -132,11 +141,11 @@ LineRenderer:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 3
-    numCapVertices: 0
+    numCapVertices: 3
     alignment: 0
     textureMode: 1
     shadowBias: 0.5
-    generateLightingData: 0
+    generateLightingData: 1
   m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!114 &4874867639734031003

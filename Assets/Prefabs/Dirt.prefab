@@ -222,7 +222,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2f66ed103ef56f4b95512a2cf205e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grassStrength: 0
+  states:
+  - strength: 0
+    point: {x: 0, y: 0}
+    normal: {x: 0, y: 0}
+    animating: 0
+    startTime: 0
+  - strength: 0
+    point: {x: 0, y: 0}
+    normal: {x: 0, y: 0}
+    animating: 0
+    startTime: 0
+  - strength: 0
+    point: {x: 0, y: 0}
+    normal: {x: 0, y: 0}
+    animating: 0
+    startTime: 0
+  - strength: 0
+    point: {x: 0, y: 0}
+    normal: {x: 0, y: 0}
+    animating: 0
+    startTime: 0
+  nextToOverride: 0
   onHitCurve:
     serializedVersion: 2
     m_Curve:
@@ -248,6 +269,4 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   animationTime: 1.5
-  grassPoint: {x: -0.03, y: 0.97}
-  grassNormal: {x: 0.11, y: 1}
   spriteRenderer: {fileID: 210524821223414450}
