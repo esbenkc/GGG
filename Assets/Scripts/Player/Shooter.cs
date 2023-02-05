@@ -146,7 +146,7 @@ public class Shooter : MonoBehaviour
         }
 
         // If the player is not movable, start a timer and reset when it reaches a certain value
-        if(!movable) {
+        if(!movable && !inTunnel) {
             delay += Time.deltaTime;
             if(playerRigidbody.velocity.magnitude < minSpeed) {
                 stillDelay += Time.deltaTime;
