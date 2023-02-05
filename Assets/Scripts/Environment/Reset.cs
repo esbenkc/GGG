@@ -6,8 +6,8 @@ public static class Reset
 {
     public static void ResetAll(bool full = false) {
         // Find all connectors and reset them
-        foreach (Connector connector in GameObject.FindObjectsOfType<Connector>()) {
-            connector.Reset();
+        foreach (Connector connector in GameObject.FindObjectsByType<Connector>(FindObjectsSortMode.None)) {
+            connector.Reset(full);
         }
     }
 }
