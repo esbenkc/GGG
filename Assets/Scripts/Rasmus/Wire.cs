@@ -58,13 +58,15 @@ public class Wire : MonoBehaviour
         }
         else
         {
+            
             hitPoints.Clear();
         }
     }
-    
+    bool hasBeenShot = false;
 
     public void NewLine()
     {
+        hasBeenShot = true;
         updating = true;
         // Create line object
         GameObject lineobj = Instantiate(lineRenderer.gameObject);
@@ -104,11 +106,24 @@ public class Wire : MonoBehaviour
 
         if (currentLine != 0)
         {
+
             LineRenderer oldLine = lineRenderers[lineRenderers.Count - 1];
             oldLine.SetPosition(oldLine.positionCount - 1, lastHit);
-            oldLine.GetComponent<RootTrail>().StartAnimating();
+            if (hitPoints.Count == lineRenderers.Count)
+            {
+                nodes.Add(player.transform.position);
+                hitPoints[hitPoints.Count - 1] = nodes.Count - 1;
+            }
+            else
+            {
+                oldLine.GetComponent<RootTrail>().StartAnimating();
+            }
         }
-        hitPoints.Add(nodes.Count - 1);
+        if (hitPoints.Count < lineRenderers.Count)
+        {
+            hitPoints.Add(nodes.Count - 1);
+
+        }
         //NewLine();
     }
     
