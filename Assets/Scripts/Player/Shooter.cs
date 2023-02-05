@@ -43,7 +43,7 @@ public class Shooter : MonoBehaviour
     [SerializeField] private float power = 100f, torquePower = 20f;
 
     // Make spanwPosition vector2
-    private Vector2 spawnPosition, startPosition;
+    private Vector2 spawnPosition;
 
     public UnityEvent onPlayerShoot;
     public CollisionEvent onPlayerHitGround;
@@ -75,8 +75,6 @@ public class Shooter : MonoBehaviour
 
     private void Start() {
         player = transform;
-        // Set the start position
-        startPosition = player.position;
         // Disable the line renderer at the start
         lineRenderer.enabled = false;
         playerRigidbody = player.GetComponent<Rigidbody2D>();
@@ -134,7 +132,8 @@ public class Shooter : MonoBehaviour
                     GameObject tunnelInstance = Instantiate(tunnel, player.position, Quaternion.identity);
                     LineRenderer tunnelLineRenderer = tunnelInstance.GetComponent<LineRenderer>();
                     tunnelLineRenderer.SetPosition(0, hit.point);
-                    tunnelLineRenderer.SetPosition(1, exitPoint);
+                    tunnelLineRenderer.SetPosition(1, (hit.point + exitPoint) / 2);
+                    tunnelLineRenderer.SetPosition(2, exitPoint);
 
                     inTunnel = true;
                     StartCoroutine(MoveThroughTunnel(exitPoint));
@@ -236,7 +235,6 @@ public class Shooter : MonoBehaviour
             emission.rateOverTime = baseExplosionPower + playerRigidbody.velocity.magnitude * explosionPower + 40f;
             
             playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-            spawnPosition = player.position;
             onPlayerHitGround.Invoke(collision);
 
             // Play sound
@@ -288,9 +286,9 @@ public class Shooter : MonoBehaviour
         
         // Move the player along the path
         while (timer < stepMoveTime)  {
+            delay = 0;
             timer += Time.deltaTime;
             if (currentStep == stepPositions.Length - 1) {
-                player.position = stepPositions[stepPositions.Length - 1];
                 break;
             }
             player.position = Vector3.Lerp(stepPositions[currentStep], stepPositions[currentStep + 1], timer / stepMoveTime);
@@ -308,12 +306,13 @@ public class Shooter : MonoBehaviour
         playerRigidbody.simulated = true;
         spawnPosition = player.position;
         movable = false;
+        delay = 0;
 
         goal.Exit();
     }
 
     private void ResetPlayer() {
-        player.position = startPosition;
+        player.position = spawnPosition;
         playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         movable = true;
         Reset.ResetAll(true);
