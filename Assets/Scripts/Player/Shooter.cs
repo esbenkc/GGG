@@ -20,20 +20,20 @@ public class TriggerEvent : UnityEvent<Collider2D>
 
 public class Shooter : MonoBehaviour
 {
-    [SerializeField]
-    private bool movable = true;
+    [Header("Player, respawn and particle system settings")]
+    [SerializeField] float minSpeed = 0.01f;
 
     [SerializeField]
-    private float minSpeed = 0.01f, minDelay = 7.5f, whenStillDelay = 0.5f, particleSystemLife = 5f, explosionPower = 2f, baseExplosionPower = 2f;
+    private float minDelay = 1f, whenStillDelay = 0.5f, explosionPower = 2f, baseExplosionPower = 2f;
 
     float delay = 0f, stillDelay = 0f;
-
-    // Drag the player character to send it flying
-    [SerializeField] private Transform player;
+    private Transform player;
+    private bool movable = true;
 
     // Particle system preab when hitting ground
     [SerializeField] private GameObject groundHitParticles;
 
+    [Header("Drag line settings")]
     // reference linerenderer
     [SerializeField] private LineRenderer lineRenderer;
 
@@ -64,9 +64,16 @@ public class Shooter : MonoBehaviour
     [SerializeField] AnimationCurve speedCurve;
     [SerializeField] float stepMoveTime = 1f;
 
+
     private Vector3[] goalPositions;
+    
+    [Header("Earth traversal")]
+    [SerializeField] GameObject tunnel;
+    bool inTunnel = false;
+
 
     private void Start() {
+        player = transform;
         // Set the start position
         startPosition = player.position;
         // Disable the line renderer at the start
@@ -96,6 +103,7 @@ public class Shooter : MonoBehaviour
 
         // When mouse is released send the player flying
         if (Input.GetMouseButtonUp(0) && movable) {
+<<<<<<< HEAD
             Debug.Log("Mouse released");
             onPlayerShoot.Invoke();
             lineRenderer.enabled = false;
@@ -105,11 +113,50 @@ public class Shooter : MonoBehaviour
             playerRigidbody.AddForce((player.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)) * power);
             // Add randmo angular momentum
             playerRigidbody.AddTorque(Random.Range(-torquePower, torquePower));
+=======
+            // Send raycast and check it if it goes through earth
+            Vector2 direction = -(Camera.main.ScreenToWorldPoint(Input.mousePosition) - player.position).normalized;
+            RaycastHit2D hit = Physics2D.Raycast(player.position, direction, 0.5f, LayerMask.GetMask("Earth"));
+            if (!hit) {
+                Jump();
+            } else {
+                // Instantiate tunnel and reference its line renderer to draw a line from the player's entrance to the earth to the exit
+>>>>>>> 52bb388 (Added buggy tunnel digging)
 
-            // Play sound
-            playerAudioSource.PlayOneShot(playerJumpSound.clip, playerJumpSound.volume);
+                Vector2 reverseDirection = -direction;
+                RaycastHit2D[] reverseHits = Physics2D.RaycastAll(new Vector2(player.position.x, player.position.y) + direction * 20f, reverseDirection, 20f, LayerMask.GetMask("Earth"));
+                Vector2 exitPoint = reverseHits[reverseHits.Length - 1].point;
+                float distanceToExitPoint = Vector2.Distance(player.position, exitPoint);
+                RaycastHit2D[] blockedExit = Physics2D.RaycastAll(player.position, direction.normalized, distanceToExitPoint + 0.3f);
+                bool blocked = false;
+
+                // Create a Unity gizmo for the blockedExit
+                Debug.DrawLine(player.position, new Vector2(player.position.x, player.position.y) + direction * (distanceToExitPoint + 0.3f), Color.red, 1f);
+                Debug.DrawLine(player.position, exitPoint, Color.green, 1f);
+
+                foreach(RaycastHit2D hit2 in blockedExit) {
+                    if (hit2.collider.gameObject.layer != LayerMask.NameToLayer("Earth") && hit2.collider.gameObject.layer != LayerMask.NameToLayer("Player")) {
+                        blocked = true;
+                    }
+                }
+                
+                if (blocked) {
+                    Jump();
+                } else {
+                    GameObject tunnelInstance = Instantiate(tunnel, player.position, Quaternion.identity);
+                    LineRenderer tunnelLineRenderer = tunnelInstance.GetComponent<LineRenderer>();
+                    tunnelLineRenderer.SetPosition(0, hit.point);
+                    tunnelLineRenderer.SetPosition(1, exitPoint);
+
+                    inTunnel = true;
+                    StartCoroutine(MoveThroughTunnel(exitPoint));
+                    
+                    playerAudioSource.PlayOneShot(playerHitSound.clip, playerHitSound.volume);
+                }
+            }
         }
 
+        // Reset the player's position
         if (Input.GetKeyDown(KeyCode.R)) {
             player.position = startPosition;
             playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
@@ -117,6 +164,7 @@ public class Shooter : MonoBehaviour
             reset.ResetAll(true);
         }
 
+        // If the player is not movable, start a timer and reset when it reaches a certain value
         if(!movable) {
             delay += Time.deltaTime;
             if(playerRigidbody.velocity.magnitude < minSpeed) {
@@ -135,14 +183,53 @@ public class Shooter : MonoBehaviour
                 reset.ResetAll();
             }
         }
+    }
 
-        if(curParticleSystem != null) {
-            particleSystemTime += Time.deltaTime;
-            if(particleSystemTime > particleSystemLife) {
-                Destroy(curParticleSystem);
-                curParticleSystem = null;
-                particleSystemTime = 0f;
-            }
+    void Jump() {
+        lineRenderer.enabled = false;
+        movable = false;
+        delay = 0f;
+        playerRigidbody.constraints = RigidbodyConstraints2D.None;
+        playerRigidbody.AddForce((player.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)) * power);
+        // Add randmo angular momentum
+        playerRigidbody.AddTorque(Random.Range(-torquePower, torquePower));
+        // Play sound
+        playerAudioSource.PlayOneShot(playerJumpSound.clip, playerJumpSound.volume);
+    }
+
+    // Coroutine to move player through a generated tunnel
+    IEnumerator MoveThroughTunnel(Vector2 exitPoint) {
+        lineRenderer.enabled = false;
+        Vector2 initPoint = player.position;
+        exitPoint = exitPoint + (exitPoint - initPoint).normalized * 0.15f;
+        float distance = Vector2.Distance(initPoint, exitPoint);
+        float power = (player.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)).magnitude;
+        float totalTime = (2f - Mathf.Log(power, 10f)) * distance;
+        float time = 0f;
+
+        // Disable player's collider
+        player.GetComponent<Collider2D>().enabled = false;
+        movable = false;
+
+        while (time < totalTime) {
+            time += Time.deltaTime;
+            player.position = Vector2.Lerp(player.position, exitPoint, time / stepMoveTime);
+            yield return null;
+        }
+        player.position = exitPoint;
+
+        player.GetComponent<Collider2D>().enabled = true;
+        movable = true;
+        inTunnel = false;
+    }
+
+    void SetMovable(bool move = true) {
+        if (move) {
+            playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            movable = true;
+        } else {
+            playerRigidbody.constraints = RigidbodyConstraints2D.None;
+            movable = false;
         }
     }
 
@@ -219,7 +306,6 @@ public class Shooter : MonoBehaviour
         player.position = stepPositions[stepPositions.Length - 1];
         gameObject.GetComponent<Collider2D>().enabled = true;
         playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-        startPosition = player.position;
         spawnPosition = player.position;
         movable = true;
     }

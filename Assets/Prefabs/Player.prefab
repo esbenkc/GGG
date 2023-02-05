@@ -103,17 +103,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46ff50163495e45e1b0fdc82491848b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movable: 1
   minSpeed: 0.1
   minDelay: 1
   whenStillDelay: 0.5
-  particleSystemLife: 5
   explosionPower: 2
   baseExplosionPower: 8
-  player: {fileID: 4901216468356348231}
   groundHitParticles: {fileID: 6738579553348600730, guid: 111b211f7ce66435d96f9412adc58c42, type: 3}
   lineRenderer: {fileID: 4901216468356348230}
-  power: 300
+  power: 500
   torquePower: 5
   onPlayerShoot:
     m_PersistentCalls:
@@ -172,6 +169,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   stepMoveTime: 1
+<<<<<<< HEAD
+=======
+  tunnel: {fileID: 1805975670871248630, guid: bc5e799d68af64bc89cde54b6b4bca67, type: 3}
+>>>>>>> 52bb388 (Added buggy tunnel digging)
 --- !u!120 &4901216468356348230
 LineRenderer:
   m_ObjectHideFlags: 0
