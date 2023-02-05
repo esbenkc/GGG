@@ -57,7 +57,7 @@ public class Shooter : MonoBehaviour
     // Create a title in the inspector
     [Header("Audio settings")]
     [SerializeField] AudioSource playerAudioSource;
-    [SerializeField] Audio playerJumpSound, playerHitSound, playerBounceSound, playerResetSound;
+    [SerializeField] Audio playerJumpSound, playerHitSound, playerBounceSound, playerResetSound, tunnelDig;
     [SerializeField] float playerVelocitySoundMultiplier = 0.5f;
 
     [Header("Goal moving settings")]
@@ -191,6 +191,9 @@ public class Shooter : MonoBehaviour
 
     // Coroutine to move player through a generated tunnel
     IEnumerator MoveThroughTunnel(Vector2 exitPoint) {
+        // Play tunnel sound
+        playerAudioSource.PlayOneShot(tunnelDig.clip, tunnelDig.volume);
+
         lineRenderer.enabled = false;
         Vector2 initPoint = player.position;
         exitPoint = exitPoint + (exitPoint - initPoint).normalized * 0.15f;
