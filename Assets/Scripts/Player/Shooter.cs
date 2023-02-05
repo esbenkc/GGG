@@ -57,7 +57,7 @@ public class Shooter : MonoBehaviour
     // Create a title in the inspector
     [Header("Audio settings")]
     [SerializeField] AudioSource playerAudioSource;
-    [SerializeField] Audio playerJumpSound, playerHitSound, playerBounceSound, playerResetSound, tunnelDig;
+    [SerializeField] Audio playerJumpSound, playerAimSound, playerHitSound, playerBounceSound, playerResetSound, tunnelDig;
     [SerializeField] float playerVelocitySoundMultiplier = 0.5f;
 
     [Header("Goal moving settings")]
@@ -91,6 +91,7 @@ public class Shooter : MonoBehaviour
             lineRenderer.enabled = true;
             lineRenderer.SetPosition(0, player.position);
             lineRenderer.SetPosition(1, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            playerAudioSource.PlayOneShot(playerAimSound.clip, playerAimSound.volume);//Simons nye lyd
         }
 
         // And keep it updated as the mouse is kept down
