@@ -159,7 +159,7 @@ RectTransform:
   m_AnchorMin: {x: 0.24914585, y: 0.07137039}
   m_AnchorMax: {x: 0.74700004, y: 0.9517778}
   m_AnchoredPosition: {x: 4.944763, y: 3.2360535}
-  m_SizeDelta: {x: -163.15344, y: -113.69336}
+  m_SizeDelta: {x: -109.5821, y: -113.6934}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &267119057
 MonoBehaviour:
@@ -181,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a2075d8ca85ee41f8805130192bc0a23, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fd46eae3235e340d7b07ad9e1922090c, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -236,7 +236,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 100}
+  m_AnchoredPosition: {x: 0, y: 160}
   m_SizeDelta: {x: 400, y: 70}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &599539628
@@ -308,15 +308,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.29411766, g: 0.69803923, b: 0.4509804, a: 1}
+  m_Color: {r: 0.8679245, g: 0.48072383, b: 0.1760413, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2747690628134850419, guid: ff085ac9fd3734b31806e392db81df4b, type: 3}
-  m_Type: 3
+  m_Sprite: {fileID: -9095717837082945937, guid: c01ebb4356a26404daa22b56aa1cdea4, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -368,7 +368,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -29.43}
+  m_AnchoredPosition: {x: 2.4781, y: -45}
   m_SizeDelta: {x: 784.0114, y: 183.1601}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1008315331
@@ -391,17 +391,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Plantformer
+  m_text: Vine Venture
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 83622be91f58695489973dd988269c65, type: 2}
-  m_sharedMaterial: {fileID: -513337391455521681, guid: 83622be91f58695489973dd988269c65, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8368b500dc0fadd438ce29acdf889764, type: 2}
+  m_sharedMaterial: {fileID: -4805488525407239687, guid: 8368b500dc0fadd438ce29acdf889764, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4285772363
-  m_fontColor: {r: 0.2924172, g: 0.6981132, b: 0.45238507, a: 1}
+    rgba: 4288601083
+  m_fontColor: {r: 0.9843138, g: 0.8588236, b: 0.61960787, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -603,7 +603,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1117918241
 RectTransform:
   m_ObjectHideFlags: 0
@@ -622,7 +622,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 10}
+  m_AnchoredPosition: {x: 0, y: 41.469}
   m_SizeDelta: {x: 400, y: 70}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1117918242
@@ -694,15 +694,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.29411766, g: 0.69803923, b: 0.4509804, a: 1}
+  m_Color: {r: 0.8679245, g: 0.48072383, b: 0.1760413, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2747690628134850419, guid: ff085ac9fd3734b31806e392db81df4b, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: -9095717837082945937, guid: c01ebb4356a26404daa22b56aa1cdea4, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -989,8 +989,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4292539903
+  m_fontColor: {r: 1, g: 0.9614348, b: 0.8537736, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1068,6 +1068,7 @@ GameObject:
   - component: {fileID: 1541216538}
   - component: {fileID: 1541216537}
   - component: {fileID: 1541216536}
+  - component: {fileID: 1541216539}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1141,3 +1142,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1541216539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1541216535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
