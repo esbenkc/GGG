@@ -86,7 +86,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.2
+        value: 0.3
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -98,8 +98,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.14509805, g: 0.86666673, b: 0.45098042, a: 0.43137255}
-      key1: {r: 0.0701762, g: 0.7830189, b: 0.49170813, a: 0.41568628}
+      key0: {r: 0.7647059, g: 0.7647059, b: 0.7647059, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   on: {fileID: 0}
   off: {fileID: 0}
-  flipGreen: {r: 0.29156286, g: 0.6792453, b: 0.29156286, a: 0.5803922}
+  flipGreen: {r: 0.29156286, g: 0.6792453, b: 0.29156286, a: 0.30980393}
   flipRed: {r: 0.6509434, g: 0.2794144, b: 0.33412442, a: 1}
   intermediateColor: {r: 0.8113208, g: 0.74772704, b: 0.36356357, a: 0.7647059}
   flipTime: 1
