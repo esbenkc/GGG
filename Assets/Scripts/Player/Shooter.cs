@@ -110,9 +110,9 @@ public class Shooter : MonoBehaviour
 
                 Vector2 reverseDirection = -direction;
                 RaycastHit2D[] reverseHits = Physics2D.RaycastAll(new Vector2(player.position.x, player.position.y) + direction * 20f, reverseDirection, 20f, LayerMask.GetMask("Earth"));
-                Vector2 exitPoint = reverseHits[reverseHits.Length - 1].point;
+                Vector2 exitPoint = reverseHits[reverseHits.Length - 1].point + direction * 0.3f;
                 float distanceToExitPoint = Vector2.Distance(player.position, exitPoint);
-                RaycastHit2D[] blockedExit = Physics2D.RaycastAll(player.position, direction, distanceToExitPoint + 0.3f);
+                RaycastHit2D[] blockedExit = Physics2D.RaycastAll(player.position, direction, distanceToExitPoint + 0.55f);
                 bool blocked = false;
 
                 // Create a Unity gizmo for the blockedExit
