@@ -43,12 +43,12 @@ public class Shooter : MonoBehaviour
     [SerializeField] private float power = 100f, torquePower = 20f;
 
     // Make spanwPosition vector2
-    private Vector2 spawnPosition, startPosition;
-    private Reset reset;
+    private Vector2 spawnPosition;
 
     public UnityEvent onPlayerShoot;
     public CollisionEvent onPlayerHitGround;
     public TriggerEvent onPlayerHitGoal;
+    public UnityEvent onPlayerReset;
 
     public GameObjectEvent onPlayerHitKey;
     private GameObject curParticleSystem;
@@ -57,7 +57,7 @@ public class Shooter : MonoBehaviour
     // Create a title in the inspector
     [Header("Audio settings")]
     [SerializeField] AudioSource playerAudioSource;
-    [SerializeField] Audio playerJumpSound, playerHitSound, playerBounceSound, playerResetSound;
+    [SerializeField] Audio playerJumpSound, playerHitSound, playerBounceSound, playerResetSound, tunnelDig;
     [SerializeField] float playerVelocitySoundMultiplier = 0.5f;
 
     [Header("Goal moving settings")]
@@ -74,17 +74,12 @@ public class Shooter : MonoBehaviour
 
     private void Start() {
         player = transform;
-        // Set the start position
-        startPosition = player.position;
         // Disable the line renderer at the start
         lineRenderer.enabled = false;
         playerRigidbody = player.GetComponent<Rigidbody2D>();
         // Freeze the player character
         playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         spawnPosition = player.position;
-        
-        // Find the reset script in the scene
-        reset = FindObjectOfType<Reset>();
     }
 
     private void Update() {
@@ -135,7 +130,8 @@ public class Shooter : MonoBehaviour
                     GameObject tunnelInstance = Instantiate(tunnel, player.position, Quaternion.identity);
                     LineRenderer tunnelLineRenderer = tunnelInstance.GetComponent<LineRenderer>();
                     tunnelLineRenderer.SetPosition(0, hit.point);
-                    tunnelLineRenderer.SetPosition(1, exitPoint);
+                    tunnelLineRenderer.SetPosition(1, (hit.point + exitPoint) / 2);
+                    tunnelLineRenderer.SetPosition(2, exitPoint);
 
                     inTunnel = true;
                     StartCoroutine(MoveThroughTunnel(exitPoint));
@@ -146,11 +142,8 @@ public class Shooter : MonoBehaviour
         }
 
         // Reset the player's position
-        if (Input.GetKeyDown(KeyCode.R)) {
-            player.position = startPosition;
-            playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-            movable = true;
-            reset.ResetAll(true);
+        if (movable && Input.GetKeyDown(KeyCode.R)) {
+            ResetPlayer();
         }
 
         // If the player is not movable, start a timer and reset when it reaches a certain value
@@ -162,14 +155,7 @@ public class Shooter : MonoBehaviour
                 stillDelay = 0f;
             }
             if (delay > minDelay && playerRigidbody.velocity.magnitude < minSpeed && stillDelay > whenStillDelay) {
-                playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-                player.position = spawnPosition;
-                movable = true;
-
-                // Play sound
-                playerAudioSource.PlayOneShot(playerResetSound.clip, playerResetSound.volume);
-
-                reset.ResetAll();
+                ResetPlayer();
             }
         }
     }
@@ -191,6 +177,9 @@ public class Shooter : MonoBehaviour
 
     // Coroutine to move player through a generated tunnel
     IEnumerator MoveThroughTunnel(Vector2 exitPoint) {
+        // Play tunnel sound
+        playerAudioSource.PlayOneShot(tunnelDig.clip, tunnelDig.volume);
+
         lineRenderer.enabled = false;
         Vector2 initPoint = player.position;
         exitPoint = exitPoint + (exitPoint - initPoint).normalized * 0.15f;
@@ -239,7 +228,6 @@ public class Shooter : MonoBehaviour
             emission.rateOverTime = baseExplosionPower + playerRigidbody.velocity.magnitude * explosionPower + 40f;
             
             playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-            spawnPosition = player.position;
             onPlayerHitGround.Invoke(collision);
 
             // Play sound
@@ -259,12 +247,22 @@ public class Shooter : MonoBehaviour
         if (collision.gameObject.layer ==  7) {
             movable = false;
             playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+
+            var goal = collision.GetComponent<Goal>();
+            goal.Reach();
+
             // Get all positions in the goal's linerenderer
             LineRenderer otherLR = collision.GetComponent<LineRenderer>();
             // Make goalPositions the same length as the goal's linerenderer
             Vector3[] goalPositions = new Vector3[otherLR.positionCount];
             otherLR.GetPositions(goalPositions);
-            StartCoroutine(MoveAlongPath(goalPositions));
+            if (!otherLR.useWorldSpace) {
+                for (int i = 0; i < goalPositions.Length; i++) {
+                    var pos = goalPositions[i];
+                    goalPositions[i] = collision.transform.localToWorldMatrix * new Vector4(pos.x, pos.y, 0, 1);
+                }
+            }
+            StartCoroutine(MoveAlongPath(goalPositions, goal));
             onPlayerHitGoal.Invoke(collision);
             // Play sound
             playerAudioSource.PlayOneShot(playerHitSound.clip, playerHitSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier > 1f ? 1f : playerHitSound.volume + playerRigidbody.velocity.magnitude * playerVelocitySoundMultiplier);
@@ -272,7 +270,7 @@ public class Shooter : MonoBehaviour
     }
 
     // Coroutine to move the player along the path of the goal
-    private IEnumerator MoveAlongPath(Vector3[] stepPositions) {
+    private IEnumerator MoveAlongPath(Vector3[] stepPositions, Goal goal) {
         float timer = 0f;
         int currentStep = 0;
         movable = false;
@@ -281,9 +279,9 @@ public class Shooter : MonoBehaviour
         
         // Move the player along the path
         while (timer < stepMoveTime)  {
+            delay = 0;
             timer += Time.deltaTime;
             if (currentStep == stepPositions.Length - 1) {
-                player.position = stepPositions[stepPositions.Length - 1];
                 break;
             }
             player.position = Vector3.Lerp(stepPositions[currentStep], stepPositions[currentStep + 1], timer / stepMoveTime);
@@ -297,9 +295,23 @@ public class Shooter : MonoBehaviour
         // Set the player to the last position
         player.position = stepPositions[stepPositions.Length - 1];
         gameObject.GetComponent<Collider2D>().enabled = true;
-        playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        playerRigidbody.constraints = RigidbodyConstraints2D.None;
+        playerRigidbody.simulated = true;
         spawnPosition = player.position;
+        movable = false;
+        delay = 0;
+
+        goal.Exit();
+    }
+
+    private void ResetPlayer() {
+        player.position = spawnPosition;
+        playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         movable = true;
+        Reset.ResetAll(true);
+        playerAudioSource.PlayOneShot(playerResetSound.clip, playerResetSound.volume);
+
+        if (onPlayerReset != null) onPlayerReset.Invoke();
     }
 }
 

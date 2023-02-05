@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Goal : MonoBehaviour
 {
+    [SerializeField]
+    UnityEvent onGoalReached, onExit;
     // Start is called before the first frame update
-    void Start()
-    {
-        
+    
+    public void Reach() {
+        if(onGoalReached != null) onGoalReached.Invoke();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void Exit() {
+        if (onExit != null) onExit.Invoke();
+
     }
 }

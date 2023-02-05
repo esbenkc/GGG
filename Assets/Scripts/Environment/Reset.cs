@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Reset : MonoBehaviour
+public static class Reset
 {
-    public void ResetAll(bool full = false) {
+    public static void ResetAll(bool full = false) {
         // Find all connectors and reset them
-        foreach (Connector connector in FindObjectsOfType<Connector>()) {
+        foreach (Connector connector in GameObject.FindObjectsOfType<Connector>()) {
             connector.Reset();
         }
     }

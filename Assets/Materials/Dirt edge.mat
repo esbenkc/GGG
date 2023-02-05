@@ -46,7 +46,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _GrassTexture:
         m_Texture: {fileID: 2800000, guid: 359ab76742f170a42bb8dbc76f6bddfb, type: 3}
-        m_Scale: {x: 5, y: 5}
+        m_Scale: {x: 3, y: 3}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: cf897339da4a4f143a4df3b44d53dc61, type: 3}
@@ -100,6 +100,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _GrassStrength: 0
+    - _GrassStrength_1: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -114,7 +115,9 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _GrassNormal: {r: 0, g: 1, b: 0, a: 0}
+    - _GrassNormal_1: {r: 0, g: 1, b: 0, a: 0}
     - _GrassPoint: {r: 0, g: 0, b: 0, a: 0}
+    - _GrassPoint_1: {r: 0, g: 0, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
