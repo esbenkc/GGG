@@ -17,7 +17,7 @@ public class RootTrail : MonoBehaviour {
     float relaxDuration = 2, stepSize = 0.05f;
 
     [SerializeField]
-    float growthSpeed = 2f;
+    float growthSpeed = 2f, revertSpeed = 5f;
 
     AnimationState state = AnimationState.NotAnimating;
     float startTime;
@@ -72,7 +72,7 @@ public class RootTrail : MonoBehaviour {
         float currentProgress =
                 state == AnimationState.Growing ?
                     elapsedTime * growthSpeed
-                    : totalLength - elapsedTime * growthSpeed;
+                    : totalLength - elapsedTime * revertSpeed;
 
         block.SetFloat("_VisibleLength", currentProgress);
         lineRenderer.SetPropertyBlock(block);
@@ -80,8 +80,13 @@ public class RootTrail : MonoBehaviour {
         if (currentProgress > totalLength || currentProgress < 0) state = AnimationState.NotAnimating;
     }
 
-    public float GetAnimationTime() {
+    public float GetGrowTime() {
         UpdateTotalLength();
         return totalLength / growthSpeed;
+    }
+
+    public float GetRevertTime() {
+        UpdateTotalLength();
+        return totalLength / revertSpeed;
     }
 }

@@ -73,7 +73,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 19
   m_Positions: []
   m_Parameters:
     serializedVersion: 3
@@ -164,6 +164,7 @@ MonoBehaviour:
   relaxDuration: 5
   stepSize: 0.05
   growthSpeed: 5
+  revertSpeed: 20
 --- !u!1 &9095722808800539289
 GameObject:
   m_ObjectHideFlags: 0

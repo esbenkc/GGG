@@ -164,6 +164,9 @@ MonoBehaviour:
   playerResetSound:
     clip: {fileID: 8300000, guid: 51756d0779aa54a9bb1aa063001b9c0d, type: 3}
     volume: 0.641
+  tunnelDig:
+    clip: {fileID: 0}
+    volume: 0
   playerVelocitySoundMultiplier: 0.5
   speedCurve:
     serializedVersion: 2
