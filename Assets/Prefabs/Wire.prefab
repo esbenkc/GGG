@@ -161,8 +161,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 9095722808547292662}
-  relaxDuration: 5
-  stepSize: 0.05
+  relaxDuration: 4
+  stepSize: 0.1
   growthSpeed: 5
   revertSpeed: 20
 --- !u!1 &9095722808800539289

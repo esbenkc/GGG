@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Root trail
-  m_Shader: {fileID: -6465566751694194690, guid: 59df5c1d5662a0e4bb0bd42e74967169, type: 3}
+  m_Name: Connector
+  m_Shader: {fileID: 4800000, guid: e260cfa7296ee7642b167f1eb5be5023, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _FLIPBOOKBLENDING_OFF
