@@ -44,11 +44,11 @@ public class Shooter : MonoBehaviour
 
     // Make spanwPosition vector2
     private Vector2 spawnPosition, startPosition;
-    private Reset reset;
 
     public UnityEvent onPlayerShoot;
     public CollisionEvent onPlayerHitGround;
     public TriggerEvent onPlayerHitGoal;
+    public UnityEvent onPlayerReset;
 
     public GameObjectEvent onPlayerHitKey;
     private GameObject curParticleSystem;
@@ -83,9 +83,6 @@ public class Shooter : MonoBehaviour
         // Freeze the player character
         playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         spawnPosition = player.position;
-        
-        // Find the reset script in the scene
-        reset = FindObjectOfType<Reset>();
     }
 
     private void Update() {
@@ -148,10 +145,7 @@ public class Shooter : MonoBehaviour
 
         // Reset the player's position
         if (Input.GetKeyDown(KeyCode.R)) {
-            player.position = startPosition;
-            playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-            movable = true;
-            reset.ResetAll(true);
+            ResetPlayer();
         }
 
         // If the player is not movable, start a timer and reset when it reaches a certain value
@@ -163,14 +157,7 @@ public class Shooter : MonoBehaviour
                 stillDelay = 0f;
             }
             if (delay > minDelay && playerRigidbody.velocity.magnitude < minSpeed && stillDelay > whenStillDelay) {
-                playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-                player.position = spawnPosition;
-                movable = true;
-
-                // Play sound
-                playerAudioSource.PlayOneShot(playerResetSound.clip, playerResetSound.volume);
-
-                reset.ResetAll();
+                ResetPlayer();
             }
         }
     }
@@ -268,11 +255,21 @@ public class Shooter : MonoBehaviour
         if (collision.gameObject.layer ==  7) {
             movable = false;
             playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+
+            var goal = collision.GetComponent<Goal>();
+            goal.Reach();
+
             // Get all positions in the goal's linerenderer
             LineRenderer otherLR = collision.GetComponent<LineRenderer>();
             // Make goalPositions the same length as the goal's linerenderer
             Vector3[] goalPositions = new Vector3[otherLR.positionCount];
             otherLR.GetPositions(goalPositions);
+            if (!otherLR.useWorldSpace) {
+                for (int i = 0; i < goalPositions.Length; i++) {
+                    var pos = goalPositions[i];
+                    goalPositions[i] = collision.transform.localToWorldMatrix * new Vector4(pos.x, pos.y, 0, 1);
+                }
+            }
             StartCoroutine(MoveAlongPath(goalPositions));
             onPlayerHitGoal.Invoke(collision);
             // Play sound
@@ -306,9 +303,20 @@ public class Shooter : MonoBehaviour
         // Set the player to the last position
         player.position = stepPositions[stepPositions.Length - 1];
         gameObject.GetComponent<Collider2D>().enabled = true;
-        playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        playerRigidbody.constraints = RigidbodyConstraints2D.None;
+        playerRigidbody.simulated = true;
         spawnPosition = player.position;
+        movable = false;
+    }
+
+    private void ResetPlayer() {
+        player.position = startPosition;
+        playerRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         movable = true;
+        Reset.ResetAll(true);
+        playerAudioSource.PlayOneShot(playerResetSound.clip, playerResetSound.volume);
+
+        if (onPlayerReset != null) onPlayerReset.Invoke();
     }
 }
 

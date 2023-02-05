@@ -145,6 +145,9 @@ MonoBehaviour:
   onPlayerHitGoal:
     m_PersistentCalls:
       m_Calls: []
+  onPlayerReset:
+    m_PersistentCalls:
+      m_Calls: []
   onPlayerHitKey:
     m_PersistentCalls:
       m_Calls: []
